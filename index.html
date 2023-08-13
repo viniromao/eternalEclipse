@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
+
+    <script>
+
+        class Line {
+            constructor(scene, x, y, length, angle) {
+                this.scene = scene;
+                this.x = x; // Starting X position
+                this.y = y; // Starting Y position
+                this.length = length; // Length of the line
+                this.angle = angle
+                // Create a Graphics object within the scene
+                this.graphics = this.scene.add.graphics();
+            }
+
+            drawLine() {
+                // Get current mouse position
+                let pointer = this.scene.input.activePointer;
+                let mouseX = pointer.x;
+                let mouseY = pointer.y;
+
+                // Calculate angle to the mouse position
+                let angleInRadians = Phaser.Math.Angle.Between(this.x, this.y, mouseX, mouseY);
+                this.angle = -angleInRadians * (180 / Math.PI);
+
+                // Calculate end point based on length and angle
+                let endX = this.x + this.length * Math.cos(angleInRadians);
+                let endY = this.y + this.length * Math.sin(angleInRadians);
+
+                // Clear previous drawings
+                this.graphics.clear();
+
+                // Set line style
+                this.graphics.lineStyle(2, 0xffffff);
+
+                // Draw the line
+                this.graphics.moveTo(this.x, this.y);
+                this.graphics.lineTo(endX, endY);
+                this.graphics.strokePath();
+            }
+
+
+            distanceToLine(a, b, c, x, y) {
+                return Math.abs(a * x + b * y + c) / Math.sqrt(a * a + b * b);
+            }
+
+            findNClosestPointsToLine(points, N) {
+                let x2 = this.x + this.length * Math.cos(this.angle);
+                let y2 = this.y + this.length * Math.sin(this.angle);
+
+                let a = y2 - this.y;
+                let b = this.x - x2;
+                let c = x2 * this.y - this.x * y2;
+
+                let distances = points.map((point) => ({
+                    point: point,
+                    distance: this.distanceToLine(a, b, c, point.x, point.y)
+                }));
+
+                distances.sort((a, b) => a.distance - b.distance);
+
+                return distances.slice(0, N).map((item) => item.point); // Returns the N closest points
+            }
+        }
+
+        class SoldierManagementSystem {
+            constructor(scene, radius) {
+                this.scene = scene
+                this.currentAngle = 90
+                this.radius = radius
+                this.sizeOfSoldiersNearTheLine = 1 * 2
+            }
+
+            updateSemiCirclePositions(line) {
+                const N = this.scene.soldierList.length;
+
+                const angleIncrement = Phaser.Math.DegToRad(180 / Math.max((N - 1), 1));
+
+                const startAngle = Phaser.Math.DegToRad(180);
+
+                for (let i = 0; i < N; i++) {
+                    const angle = startAngle - angleIncrement * i;
+
+                    this.scene.soldierList[i].formationAngle = angle
+
+                    const x = this.scene.player.position.x + this.radius * Math.cos(angle);
+                    const y = this.scene.player.position.y - this.radius * Math.sin(angle);
+
+                    this.scene.soldierList[i].finalPosition.x = x;
+                    this.scene.soldierList[i].finalPosition.y = y;
+                }
+
+                //realocate the nearest soldiers near the line
+                let biggerAngle = true
+                for (let i = 0; i < N; i++) {
+                    const angle = startAngle - angleIncrement * i;
+
+                    if (biggerAngle && angle * (180 / Math.PI) < line.angle) {
+                        biggerAngle = false
+                        if (this.scene.soldierList[i - 1] != null) {
+                            const x = this.scene.player.position.x + this.radius * Math.cos(this.scene.soldierList[i - 1].formationAngle - angleIncrement / 2);
+                            const y = this.scene.player.position.y - this.radius * Math.sin(this.scene.soldierList[i - 1].formationAngle - angleIncrement / 2);
+
+                            this.scene.soldierList[i - 1].formationAngle -= angleIncrement / 2
+
+                            this.scene.soldierList[i - 1].finalPosition.x = x;
+                            this.scene.soldierList[i - 1].finalPosition.y = y;
+                        }
+
+                        if (this.scene.soldierList[i + 1] != null) {
+
+                            const x = this.scene.player.position.x + this.radius * Math.cos(this.scene.soldierList[i + 1].formationAngle + angleIncrement / 2);
+                            const y = this.scene.player.position.y - this.radius * Math.sin(this.scene.soldierList[i + 1].formationAngle + angleIncrement / 2);
+
+                            this.scene.soldierList[i + 1].formationAngle += angleIncrement / 2
+
+
+                            this.scene.soldierList[i + 1].finalPosition.x = x;
+                            this.scene.soldierList[i + 1].finalPosition.y = y;
+                        }
+
+                        return
+                    }
+
+                }
+            }
+        }
+
+        class SpriteAnimationComponent {
+            constructor(key, frameConfig) {
+                this.key = key;
+                this.frameConfig = frameConfig;
+            }
+        }
+
+        class AnimationSystem {
+            constructor(scene) {
+                this.scene = scene;
+            }
+
+            addMonsterAnimation(entity) {
+                if (entity.spriteAnimation) {
+                    this.scene.anims.create({
+                        key: entity.spriteAnimation.key,
+                        frames: this.scene.anims.generateFrameNumbers('monster_sprites', entity.spriteAnimation.frameConfig),
+                        frameRate: 5,
+                        repeat: -1,
+                    });
+                    entity.sprite.anims.play(entity.spriteAnimation.key);
+                }
+            }
+
+            addSoldierAnimation(entity) {
+                if (entity.spriteAnimation) {
+                    this.scene.anims.create({
+                        key: 'skeleton',
+                        frames: this.scene.anims.generateFrameNumbers('skeleton', { start: 0, end: 2 }),
+                        frameRate: 5,
+                        repeat: -1,
+                    });
+                    entity.sprite.anims.play('skeleton');
+                }
+            }
+        }
+
+        class PositionComponent {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        class VelocityComponent {
+            constructor(dx, dy) {
+                this.dx = dx;
+                this.dy = dy;
+            }
+        }
+
+        class MovementSystem {
+            constructor(speed) {
+                this.speed = speed;
+                this.stopThreshold = 3;
+            }
+
+            update(entity, scene) {
+                if (entity.position && entity.velocity && entity.finalPosition) {
+
+                    entity.sprite.x = entity.position.x;
+                    entity.sprite.y = entity.position.y;
+
+                    if ((Math.abs(entity.position.x - entity.finalPosition.x) < this.stopThreshold) && (Math.abs(entity.position.y == entity.finalPosition.y) < this.stopThreshold)) {
+                        entity.position.x = entity.finalPosition.x;
+                        entity.position.y = entity.finalPosition.y;
+                        return
+                    }
+
+                    const angle = Phaser.Math.Angle.Between(
+                        entity.position.x,
+                        entity.position.y,
+                        entity.finalPosition.x,
+                        entity.finalPosition.y
+                    );
+
+                    entity.velocity.dx = Math.cos(angle) * this.speed;
+                    entity.velocity.dy = Math.sin(angle) * this.speed;
+
+                    entity.position.x += entity.velocity.dx;
+                    entity.position.y += entity.velocity.dy;
+
+                    if (Phaser.Math.Distance.Between(
+                        entity.position.x,
+                        entity.position.y,
+                        entity.finalPosition.x,
+                        entity.finalPosition.y) < this.speed) {
+
+                        entity.position.x = entity.finalPosition.x;
+                        entity.position.y = entity.finalPosition.y;
+                    }
+                }
+            }
+        }
+
+
+        class Entity {
+            constructor(sprite, position, velocity, spriteAnimation, finalPosition) {
+                this.sprite = sprite; //of type this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 15, 'player');
+                this.spriteAnimation = spriteAnimation;
+                this.position = position;
+                this.velocity = velocity;
+                this.finalPosition = finalPosition == null ? position : finalPosition;
+                this.radius = 32
+            }
+
+            destroy() {
+                // Destroy the sprite (if it's a Phaser sprite object)
+                if (this.sprite) {
+                    this.sprite.destroy();
+                }
+
+                // Nullify properties to help with garbage collection
+                this.sprite = null;
+                this.spriteAnimation = null;
+                this.position = null;
+                this.velocity = null;
+                this.finalPosition = null;
+            }
+        }
+
+        class Soldier extends Entity {
+            constructor(sprite, position, velocity, spriteAnimation, finalPosition, formationAngle) {
+                super(sprite, position, velocity, spriteAnimation, finalPosition)
+                this.formationAngle = formationAngle
+            }
+        }
+
+        class EntityDeployer {
+            constructor(scene) {
+                this.scene = scene;
+            }
+
+            deployMonster() {
+                let randomCharacter = (Phaser.Math.Between(1, 9) * 4) - 4;
+
+                const randomX = Phaser.Math.Between(0, this.scene.game.config.width);
+
+                const sprite = this.scene.add.sprite(randomX, 0, 'monster_sprites');
+
+                const position = new PositionComponent(randomX, 0);
+
+                const velocity = new VelocityComponent(0, 0);
+
+                const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
+
+                const entity = new Entity(sprite, position, velocity, spriteAnimation, this.scene.player.position)
+
+                this.scene.animationSystem.addMonsterAnimation(entity);
+
+                this.scene.monstersList.push(entity)
+
+                return entity;
+            }
+
+            deploySoldier(soldierManagementSystem) {
+                let randomCharacter = (Phaser.Math.Between(1, 2) * 2) - 2;
+
+                const sprite = this.scene.add.sprite(0, 0, 'skeleton');
+                const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y);
+                const finalPosition = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y);
+                const velocity = new VelocityComponent(0, 0);
+                const spriteAnimation = new SpriteAnimationComponent('skeleton', { start: 0, end: 2 });
+                const entity = new Soldier(sprite, position, velocity, spriteAnimation, finalPosition, 0)
+
+                this.scene.animationSystem.addSoldierAnimation(entity);
+
+                // Add the new soldier to the list and then update all positions
+                const positionToInsert = Math.floor(Math.random() * (this.scene.soldierList.length + 1));
+                this.scene.soldierList.splice(positionToInsert, 0, entity);
+
+                soldierManagementSystem.updateSemiCirclePositions(this.scene.line);
+
+                return entity;
+            }
+
+        }
+
+        class CollisionSystem {
+            constructor(scene, dodgeDistance, collisionDistance) {
+                this.scene = scene;
+                this.dodgeDistance = dodgeDistance; // Distance to dodge on collision
+                this.collisionDistance = collisionDistance; // Collision radius
+            }
+
+            update() {
+
+                this.scene.monstersList.forEach((monster, index) => {
+                    this.scene.soldierList.forEach((soldier) => {
+                        // Check for collision between monster and soldier using the specified collision distance
+                        if (Phaser.Geom.Intersects.CircleToCircle(
+                            new Phaser.Geom.Circle(monster.position.x, monster.position.y, this.collisionDistance),
+                            new Phaser.Geom.Circle(soldier.position.x, soldier.position.y, this.collisionDistance))) {
+
+                            // Calculate the angle between the monster and soldier
+                            const angle = Phaser.Math.Angle.Between(
+                                monster.position.x, monster.position.y,
+                                soldier.position.x, soldier.position.y
+                            );
+
+                            // Move monster and soldier away from each other
+                            monster.position.x += Math.cos(angle + Math.PI) * this.dodgeDistance;
+                            monster.position.y += Math.sin(angle + Math.PI) * this.dodgeDistance;
+                            soldier.position.x += Math.cos(angle) * this.dodgeDistance;
+                            soldier.position.y += Math.sin(angle) * this.dodgeDistance;
+
+                            // Update sprite positions
+                            monster.sprite.x = monster.position.x;
+                            monster.sprite.y = monster.position.y;
+                            soldier.sprite.x = soldier.position.x;
+                            soldier.sprite.y = soldier.position.y;
+                        }
+
+                    });
+                });
+
+                this.scene.monstersList.forEach(monster => {
+                    if (Phaser.Geom.Intersects.CircleToCircle(
+                        new Phaser.Geom.Circle(monster.position.x, monster.position.y, this.collisionDistance),
+                        new Phaser.Geom.Circle(this.scene.player.position.x, this.scene.player.position.y, this.collisionDistance))) {
+
+                        console.log('one null monster')
+                        monster.destroy()
+                    }
+                });
+
+                this.scene.monstersList = this.scene.monstersList.filter(item => item.position != null);
+            }
+        }
+
+
+        class TimerManager {
+            constructor(scene, delay, callback) {
+                this.scene = scene;
+                this.delay = delay;
+                this.callback = callback;
+            }
+
+            start() {
+                this.timedEvent = this.scene.time.addEvent({
+                    delay: this.delay,
+                    callback: this.callback,
+                    callbackScope: this.scene,
+                    loop: true,
+                });
+            }
+
+            stop() {
+                this.timedEvent.remove();
+            }
+        }
+
+        const States = { intro: "intro", menu: "menu" };
+        let currentState = States.intro
+
+        class MainScene extends Phaser.Scene {
+            constructor() {
+                super({ key: 'MainScene' });
+            }
+
+            preload() {
+                this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+                this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
+                this.load.spritesheet('skeleton', 'assets/sprites/skeleton.png', { frameWidth: 16, frameHeight: 16 });
+                this.load.spritesheet('player', 'assets/sprites/slime.png', { frameWidth: 16, frameHeight: 16 });
+                this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
+            }
+
+            create() {
+
+                this.themeSound = this.sound.add('themeSound');
+                this.themeSound.setVolume(.1)
+                this.themeSound.play();
+
+                this.soldierManagementSystem = new SoldierManagementSystem(this, 100)
+                this.collisionSystem = new CollisionSystem(this, 30, 15)
+                this.entityDeployer = new EntityDeployer(this);
+                this.animationSystem = new AnimationSystem(this);
+                this.movementSystem = new MovementSystem(1);
+
+                this.monsterDeployTimer = new TimerManager(this, 1000, this.createMonster);
+                this.monsterDeployTimer.start();
+
+                this.soldierDeployTimer = new TimerManager(this, 300, this.createSoldier);
+                this.soldierDeployTimer.start();
+
+
+                const sprite = this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height / 2, 'player');
+                const position = new PositionComponent(this.sys.game.config.width / 2, this.sys.game.config.height - 25);
+                const velocity = new VelocityComponent(0, 0);
+                const finalPosition = position;
+
+                this.player = new Entity(sprite, position, velocity, null, finalPosition)
+
+                this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
+
+                this.soldierList = []
+                this.monstersList = []
+
+                this.input.on('pointerdown', (pointer) => {
+                    this.entityDeployer.deploySoldier(this.soldierManagementSystem);
+                });
+
+                this.counter = 0
+            }
+
+            update() {
+                this.counter++
+                console.log(this.counter)
+                if (this.counter % 10 === 0)
+                    this.soldierManagementSystem.updateSemiCirclePositions(this.line)
+
+                this.collisionSystem.update();
+
+                this.monstersList.forEach(monster => {
+                    this.movementSystem.update(monster, this);
+                });
+
+                this.soldierList.forEach(soldier => {
+                    this.movementSystem.update(soldier, this);
+                });
+
+                this.movementSystem.update(this.player, this);
+
+                this.line.drawLine();
+            }
+
+            createMonster() {
+                this.entityDeployer.deployMonster()
+            }
+
+            createSoldier() {
+
+                if (this.soldierList.length < 8)
+                    this.entityDeployer.deploySoldier(this.soldierManagementSystem)
+            }
+        }
+
+        var config = {
+            type: Phaser.AUTO,
+            width: 512,
+            height: 480,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 200 }
+                }
+            },
+            scene: MainScene,
+            backgroundColor: '#000'
+        };
+
+        var game = new Phaser.Game(config);
+
+    </script>
+
+
+</body>
+
+</html>
