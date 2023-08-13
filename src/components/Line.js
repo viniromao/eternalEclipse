@@ -27,7 +27,7 @@ export default class Line {
         this.graphics.clear();
 
         // Set line style
-        this.graphics.lineStyle(2, 0xffffff);
+        this.graphics.lineStyle(2, 0x000000);
 
         // Draw the line
         this.graphics.moveTo(this.x, this.y);

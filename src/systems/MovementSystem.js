@@ -4,8 +4,8 @@ export default class MovementSystem {
         this.stopThreshold = 3;
     }
 
-    update(entity, scene) {
-        if (entity.position && entity.velocity && entity.finalPosition) {
+    update(entity) {
+        if (entity.position && entity.velocity && entity.finalPosition && entity.dying == false) {
 
             entity.sprite.x = entity.position.x;
             entity.sprite.y = entity.position.y;
@@ -13,6 +13,7 @@ export default class MovementSystem {
             if ((Math.abs(entity.position.x - entity.finalPosition.x) < this.stopThreshold) && (Math.abs(entity.position.y == entity.finalPosition.y) < this.stopThreshold)) {
                 entity.position.x = entity.finalPosition.x;
                 entity.position.y = entity.finalPosition.y;
+                this.updateHealthPosition(entity)
                 return
             }
 
@@ -38,6 +39,14 @@ export default class MovementSystem {
                 entity.position.x = entity.finalPosition.x;
                 entity.position.y = entity.finalPosition.y;
             }
+
+            this.updateHealthPosition(entity)
+        }
+    }
+
+    updateHealthPosition(entity) {
+        if (entity.health && entity.dying == false) {
+            entity.health.updatePosition(entity.position)
         }
     }
 }

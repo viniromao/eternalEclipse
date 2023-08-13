@@ -15,6 +15,20 @@ export default class AnimationSystem {
         }
     }
 
+    addHiddenMonsterAnimation(entity) {
+        if (entity.spriteAnimation) {
+            const hiddenFrameConfig = {start: entity.spriteAnimation.frameConfig.start + 4, end: entity.spriteAnimation.frameConfig.end + 4}
+            this.scene.anims.create({
+                key: entity.spriteAnimation.key,
+                frames: this.scene.anims.generateFrameNumbers('monster_sprites', hiddenFrameConfig),
+                frameRate: 5,
+                repeat: -1,
+            });
+            entity.sprite.anims.play(entity.spriteAnimation.key);
+        }
+    }
+
+
     addGoodGuyAnimation(entity) {
         if (entity.spriteAnimation) {
             this.scene.anims.create({
@@ -27,15 +41,37 @@ export default class AnimationSystem {
         }
     }
 
-    addSoldierAnimation(entity) {
+    addBackGroundAnimation(entity) {
         if (entity.spriteAnimation) {
             this.scene.anims.create({
-                key: 'skeleton',
-                frames: this.scene.anims.generateFrameNumbers('skeleton', { start: 0, end: 2 }),
-                frameRate: 5,
+                key: entity.spriteAnimation.key,
+                frames: this.scene.anims.generateFrameNumbers('background', entity.spriteAnimation.frameConfig),
+                frameRate: 2,
                 repeat: -1,
             });
-            entity.sprite.anims.play('skeleton');
+            entity.sprite.anims.play(entity.spriteAnimation.key);
         }
     }
+
+    addGoodGuyCustomAnimation(entity, customAnimation, callback, frameRate) {
+        this.scene.anims.create({
+            key: customAnimation.key,
+            frames: this.scene.anims.generateFrameNumbers('goodGuys', customAnimation.frameConfig),
+            frameRate: frameRate,
+            repeat: 0,
+        });
+
+        entity.sprite.anims.play(customAnimation.key);
+
+        entity.sprite.on('animationcomplete', () => {
+            entity.sprite.anims.play(entity.spriteAnimation.key);
+
+            if (callback)
+                callback();
+
+
+        }, this.scene);
+    }
+
+
 }
