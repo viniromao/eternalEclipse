@@ -29,7 +29,7 @@ class GameOverScene extends Phaser.Scene {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
 
-        this.add.text(centerX -120, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px'});
+        this.add.text(centerX - 120, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
 
         const restartButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
         restartButton.setInteractive();
@@ -62,7 +62,7 @@ class StartScene extends Phaser.Scene {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
 
-        this.add.text(centerX -150, centerY - 150, 'Game Title', { fontFamily: 'custom', fontSize: '70px',});
+        this.add.text(centerX - 150, centerY - 150, 'Game Title', { fontFamily: 'custom', fontSize: '70px', });
 
         const startButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
         startButton.setInteractive();
@@ -86,10 +86,10 @@ class StartScene extends Phaser.Scene {
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
-        this.isPaused = false;
     }
 
     create() {
+
         this.createSystems();
         this.createPlayer();
         this.initInputs();
@@ -97,39 +97,27 @@ class MainScene extends Phaser.Scene {
         this.initTimers();
         this.initSounds();
         this.loadProgressBar();
-        this.setupPauseSystem();
 
         this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
     }
 
-    setupPauseSystem() {
-        this.input.keyboard.on('keydown-ESC', this.togglePause, this);
-        this.input.keyboard.on('keydown-R', this.resumeGame, this);
-    }
-
     togglePause() {
         this.isPaused = !this.isPaused;
-
-        if (this.isPaused) {
-            this.scene.pause();
-        } else {
-            this.scene.resume();
-        }
     }
 
-    resumeGame(event) {
-        if (this.isPaused && event.key === 'r') {
-            this.isPaused = false;
-            this.scene.resume();
-        }
-    }
+
 
     gameOver() {
-        this.scene.pause('MainScene');
+        this.togglePause();
         this.scene.launch('GameOverScene');
     }
 
     update() {
+        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
+            this.togglePause();
+        }
+
+        // If the game is paused, don't execute further update logic
         if (this.isPaused) {
             return;
         }
@@ -215,6 +203,8 @@ class MainScene extends Phaser.Scene {
             this.entityDeployer.deploySoldier(this.soldierManagementSystem);
         });
 
+        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
         // this.input.on('pointermove', (pointer) => {
         //     if (this.archerRange != null) {
         //         this.archerRange.draw(pointer.x, pointer.y);
@@ -223,6 +213,7 @@ class MainScene extends Phaser.Scene {
     }
 
     initData() {
+        this.isPaused = false;
         this.entityDeployer.deployFireplace()
         this.archerRange = new ArcherRange(this, 50);
         this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
@@ -280,7 +271,7 @@ class MainScene extends Phaser.Scene {
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
     }
-    loadProgressBar(){
+    loadProgressBar() {
         this.progressBar = this.add.image(this.sys.game.config.width / 2, 20, 'progress_bar');
         this.progressBar.setScale(1);
     }
