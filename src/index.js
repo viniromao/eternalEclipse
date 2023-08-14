@@ -25,15 +25,9 @@ class MainScene extends Phaser.Scene {
         this.initData();
         this.initTimers();
         this.initSounds();
-        // this.targetSystem.push(new Target(this, 5, this.archerRange.getRandomTargetsInRange(3)))
-
     }
 
     update() {
-        let startTime
-        let endTime
-        let timeTaken
-
         this.counter++
 
         if (this.counter % 10 == 0) {
@@ -62,7 +56,6 @@ class MainScene extends Phaser.Scene {
             this.deathSystem.update(this.soldierList);
         }
 
-        this.line.drawLine();
         this.draw();
     }
 
@@ -91,7 +84,7 @@ class MainScene extends Phaser.Scene {
 
     createSystems() {
         this.targetSystem = []
-        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 150)
+        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 200)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);
@@ -132,8 +125,8 @@ class MainScene extends Phaser.Scene {
         this.acherDeployTimer = new TimerManager(this, 300, this.createSoldier);
         this.acherDeployTimer.start();
 
-        this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
-        this.archerFireTimer.start();
+        // this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
+        // this.archerFireTimer.start();
     }
 
     initSounds() {
@@ -142,15 +135,16 @@ class MainScene extends Phaser.Scene {
         this.themeSound.play();
 
         this.soldierDeathSound = this.sound.add('death')
-        this.soldierDeathSound.setVolume(.5);
+        this.soldierDeathSound.setVolume(.6);
 
         this.monsterDeathSound = this.sound.add('monsterDeath')
-        this.monsterDeathSound.setVolume(1);
+        this.monsterDeathSound.setVolume(.1);
     }
 
     draw() {
-        this.targetSystem.forEach(target => target.draw())
+        // this.targetSystem.forEach(target => target.draw())
         this.fogOfWar.drawFog([this.firePlace])
+        this.line.drawLine();
     }
 
     archerFire() {

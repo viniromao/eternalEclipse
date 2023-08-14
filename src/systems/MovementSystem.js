@@ -30,6 +30,7 @@ export default class MovementSystem {
             entity.position.x += entity.velocity.dx;
             entity.position.y += entity.velocity.dy;
 
+            //only to not overshoot
             if (Phaser.Math.Distance.Between(
                 entity.position.x,
                 entity.position.y,

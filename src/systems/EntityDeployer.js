@@ -35,16 +35,14 @@ export default class EntityDeployer {
                 break;
         }
 
-
-
         const sprite = this.scene.add.sprite(randomX, randomY, 'monster_sprites');
         const position = new PositionComponent(randomX, randomY);
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
         const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, health, 1)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, health, 1, true)
 
-        this.scene.animationSystem.addHiddenMonsterAnimation(entity);
+        this.scene.animationSystem.addMonsterAnimation(entity);
 
         this.scene.monstersList.push(entity)
 
@@ -114,13 +112,14 @@ export default class EntityDeployer {
     }
 
     deployFireplace() {
-        const spriteAnimation = new SpriteAnimationComponent('firePlace', { start: 13, end: 17 });
-        const sprite = this.scene.add.sprite(100, 100, 'firePlace');
-        const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y - 25)
+        const spriteAnimation = new SpriteAnimationComponent('firePlace', { start: 12, end: 15 });
+        const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y - 45)
+        const sprite = this.scene.add.sprite(position.x, position.y, 'firePlace');
 
-        this.scene.firePlace = new FirePlace(position, sprite, spriteAnimation)
+        const fireplace = new FirePlace(position, sprite, spriteAnimation)
+        this.scene.firePlace = fireplace
 
-        this.scene.animationSystem.addBackGroundAnimation(this.scene.player);
+        this.scene.animationSystem.addBackGroundAnimation(fireplace);
     }
 
 }
