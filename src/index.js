@@ -13,9 +13,80 @@ import DeathSystem from "./systems/DeathSystem.js"
 import PositionComponent from "./components/PositionComponent.js"
 import FogOfWar from "./systems/FogOfWar.js"
 
+class GameOverScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'GameOverScene' });
+    }
+
+    preload() {
+        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
+    }
+
+    create() {
+        // Add a black background
+        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000).setOrigin(0, 0);
+
+        const centerX = this.cameras.main.centerX;
+        const centerY = this.cameras.main.centerY;
+
+        this.add.text(centerX -120, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px'});
+
+        const restartButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
+        restartButton.setInteractive();
+
+        restartButton.on('pointerover', () => {
+            restartButton.setFrame(2);
+        });
+
+        restartButton.on('pointerout', () => {
+            restartButton.setFrame(0);
+        });
+
+        restartButton.on('pointerup', this.restartGame, this);
+    }
+
+    restartGame() {
+        this.scene.start('MainScene');
+    }
+}
+class StartScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'StartScene' });
+    }
+
+    preload() {
+        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
+    }
+
+    create() {
+        const centerX = this.cameras.main.centerX;
+        const centerY = this.cameras.main.centerY;
+
+        this.add.text(centerX -150, centerY - 150, 'Game Title', { fontFamily: 'custom', fontSize: '70px',});
+
+        const startButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
+        startButton.setInteractive();
+
+        startButton.on('pointerover', () => {
+            startButton.setFrame(2);
+        });
+
+        startButton.on('pointerout', () => {
+            startButton.setFrame(0);
+        });
+
+        startButton.on('pointerup', this.startGame, this);
+    }
+
+    startGame() {
+        this.scene.start('MainScene');
+    }
+}
+
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
+        this.isPaused = false;
     }
 
     create() {
@@ -25,9 +96,44 @@ class MainScene extends Phaser.Scene {
         this.initData();
         this.initTimers();
         this.initSounds();
+        this.loadProgressBar();
+        this.setupPauseSystem();
+
+        this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+    }
+
+    setupPauseSystem() {
+        this.input.keyboard.on('keydown-ESC', this.togglePause, this);
+        this.input.keyboard.on('keydown-R', this.resumeGame, this);
+    }
+
+    togglePause() {
+        this.isPaused = !this.isPaused;
+
+        if (this.isPaused) {
+            this.scene.pause();
+        } else {
+            this.scene.resume();
+        }
+    }
+
+    resumeGame(event) {
+        if (this.isPaused && event.key === 'r') {
+            this.isPaused = false;
+            this.scene.resume();
+        }
+    }
+
+    gameOver() {
+        this.scene.pause('MainScene');
+        this.scene.launch('GameOverScene');
     }
 
     update() {
+        if (this.isPaused) {
+            return;
+        }
+
         this.counter++
 
         if (this.counter % 10 == 0) {
@@ -56,14 +162,25 @@ class MainScene extends Phaser.Scene {
             this.deathSystem.update(this.soldierList);
         }
 
+        //if condition to gameOver
+        if (Phaser.Input.Keyboard.JustDown(this.gameOverKey)) {
+            this.gameOver();
+        }
+
         this.draw();
     }
 
     createMonster() {
+        if (this.isPaused) {
+            return;
+        }
         this.entityDeployer.deployMonster()
     }
 
     createSoldier() {
+        if (this.isPaused) {
+            return;
+        }
         if (this.archersList.length < 4) {
             this.entityDeployer.deployArcher()
         } else {
@@ -152,6 +269,7 @@ class MainScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.spritesheet('progress_bar', 'assets/ui/progress_bar.png', { frameWidth: 32, frameHeight: 1000 });
         this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
@@ -162,9 +280,11 @@ class MainScene extends Phaser.Scene {
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
     }
+    loadProgressBar(){
+        this.progressBar = this.add.image(this.sys.game.config.width / 2, 20, 'progress_bar');
+        this.progressBar.setScale(1);
+    }
 }
-
-
 
 var config = {
     type: Phaser.AUTO,
@@ -176,7 +296,7 @@ var config = {
             gravity: { y: 200 }
         }
     },
-    scene: MainScene,
+    scene: [StartScene, MainScene, GameOverScene],
     backgroundColor: '#000'
 };
 
