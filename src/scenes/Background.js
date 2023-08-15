@@ -35,8 +35,4 @@ export default class GrassBackground {
           sprite.play('grassAnimation');
       });
   }
-
-  update() {
-      // Add any update logic here if needed
-  }
 }
