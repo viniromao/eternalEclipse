@@ -13,6 +13,7 @@ import FogOfWar from "./systems/FogOfWar.js"
 
 import StartScene from "./scenes/StartScene.js"
 import GameOverScene from "./scenes/GameOverScene.js"
+import GrassBackground from "./scenes/Background.js"
 
 
 class MainScene extends Phaser.Scene {
@@ -107,7 +108,7 @@ class MainScene extends Phaser.Scene {
         else {
             this.acherDeployTimer.stop()
         }
-    }
+    } 
 
     createPlayer() {
         this.entityDeployer.deployTheKing();
@@ -193,10 +194,10 @@ class MainScene extends Phaser.Scene {
         this.monsterDeathSound.setVolume(.1);
 
         this.gameOverSound = this.sound.add('gameOver')
-        this.gameOverSound.setVolume(.5);
+        this.gameOverSound.setVolume(.2);
 
         this.attackHumanSound = this.sound.add('attackHuman')
-        this.attackHumanSound.setVolume(.08);
+        this.attackHumanSound.setVolume(.06);
     }
 
     draw() {

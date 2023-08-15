@@ -20,13 +20,12 @@ export default class GameOverScene extends Phaser.Scene {
 
         this.add.text(centerX - 130, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
         this.add.text(centerX - 90, centerY - 70, 'The King is Dead', { fontFamily: 'custom', fontSize: '30px' });
+        this.add.text(centerX - 60, centerY - 20, 'Gonna Give Up Already?', { fontFamily: 'custom', fontSize: '15px' });
 
         const button = this.add.sprite(centerX, centerY + 90, 'button', 0);
 
-        // Make the button interactive if needed
         button.setInteractive();
 
-        // Add an event listener for when the button is clicked if needed
         button.on('pointerdown', () => {
             button.setFrame(1);
         });
@@ -34,6 +33,17 @@ export default class GameOverScene extends Phaser.Scene {
         button.on('pointerup', () => {
             this.restartGame()
         });
+
+        const credits = "2023 - Ivanez, Kessel Nebula, Eduga, Hallowk1d" 
+        const creditsStyle = {
+            fontFamily: 'custom',
+            fill: '#fff',
+            wordWrap: { width: 280, useAdvancedWrap: true },
+            align: 'right',
+            fontSize: 12
+        };
+        const joke = this.add.text(410, this.sys.game.config.height - 30, credits, creditsStyle);
+        joke.setOrigin(0, 0.5);
     }
 
     restartGame() {
