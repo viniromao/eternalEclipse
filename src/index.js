@@ -110,7 +110,7 @@ class MainScene extends Phaser.Scene {
         else {
             this.acherDeployTimer.stop()
         }
-    } 
+    }
 
     createPlayer() {
         this.entityDeployer.deployTheKing();
@@ -212,7 +212,6 @@ class MainScene extends Phaser.Scene {
 
     }
 
-
     loadProgressBar() {
         this.progressBar = this.add.image(this.sys.game.config.width / 2, 20, 'progress_bar');
         this.progressBar.setScale(1);
@@ -228,9 +227,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    },    scene: [LoadingScene, StartScene, MainScene, GameOverScene],
-
-    scene: [LoadingScene, StartScene, MainScene, GameOverScene],
+    }, scene: [LoadingScene, StartScene, MainScene, GameOverScene],
     backgroundColor: '#000'
 };
 
