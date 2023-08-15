@@ -11,11 +11,11 @@ export default class LoadingScene extends Phaser.Scene {
         const loadingText = this.add.text(centerX - 100, centerY - 50, baseText, { fontFamily: 'custom', fontSize: '50px' });
 
         this.time.addEvent({
-            delay: 500, // every 500 milliseconds
+            delay: 500,
             callback: () => {
-                dots = (dots + 1) % 4; // Cycle through 0, 1, 2, and 3 dots
+                dots = (dots + 1) % 4;
                 const text = baseText + '.'.repeat(dots);
-                loadingText.setText(text); // The text configuration remains the same, including the font family
+                loadingText.setText(text);
             },
             callbackScope: this,
             loop: true
@@ -28,8 +28,6 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
         this.load.spritesheet('goodGuys', 'assets/sprites/goodGuysSprites.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('skeleton', 'assets/sprites/skeleton.png', { frameWidth: 16, frameHeight: 16 });
-        this.load.spritesheet('player', 'assets/sprites/slime.png', { frameWidth: 16, frameHeight: 16 });
         this.load.audio('startSound', 'assets/music/startScreen.mp3');
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
         this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
@@ -42,8 +40,6 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     update() {
-        // this.scene.start('StartScene');
+        this.scene.start('StartScene');
     }
 }
-
-// ... rest of the code ...

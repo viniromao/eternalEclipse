@@ -10,10 +10,11 @@ import EntityDeployer from "./systems/EntityDeployer.js"
 import CollisionSystem from "./systems/CollisionSystem.js"
 import DeathSystem from "./systems/DeathSystem.js"
 import FogOfWar from "./systems/FogOfWar.js"
+import LevelProgressionSystem from "./systems/LevelProgressionSystem.js"
 
 import StartScene from "./scenes/StartScene.js"
 import GameOverScene from "./scenes/GameOverScene.js"
-import GrassBackground from "./scenes/Background.js"
+import GrassBackground from "./components/Background.js"
 import LoadingScene from "./scenes/Loading.js"
 
 
@@ -30,7 +31,6 @@ class MainScene extends Phaser.Scene {
         this.initTimers();
         this.initSounds();
         this.loadProgressBar();
-        this.grassBackground = new GrassBackground(this);
     }
 
     togglePause() {
@@ -40,6 +40,7 @@ class MainScene extends Phaser.Scene {
 
 
     gameOver() {
+        this.grassBackground.destroySprites()
         this.togglePause();
         this.themeSound.stop();
         this.gameOverSound.play();
@@ -91,7 +92,7 @@ class MainScene extends Phaser.Scene {
         if (this.isPaused) {
             return;
         }
-        this.entityDeployer.deployMonster()
+        this.entityDeployer.deployMonster(10, 1, 1)
     }
 
     createSoldier() {
@@ -118,6 +119,7 @@ class MainScene extends Phaser.Scene {
 
     createSystems() {
         this.targetSystem = []
+        this.levelProgressionSystem = new LevelProgressionSystem(this)
         this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
@@ -154,6 +156,7 @@ class MainScene extends Phaser.Scene {
     }
 
     initData() {
+        this.grassBackground = new GrassBackground(this);
         this.isPaused = false;
         this.entityDeployer.deployFireplace()
         this.archerRange = new ArcherRange(this, 50);
