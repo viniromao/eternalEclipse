@@ -15,7 +15,7 @@ export default class EntityDeployer {
 
     deployMonster() {
         let randomSide = Phaser.Math.Between(1, 3);
-        let randomCharacter = (Phaser.Math.Between(1, 9) * 8) - 8;
+        let randomCharacter = (Phaser.Math.Between(1, 10) * 8) - 8;
 
         let randomX = Phaser.Math.Between(0, this.scene.game.config.width);
         let randomY = Phaser.Math.Between(0, this.scene.game.config.height);

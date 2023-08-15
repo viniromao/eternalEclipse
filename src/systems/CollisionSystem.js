@@ -56,6 +56,7 @@ export default class CollisionSystem {
                     soldier.sprite.x = soldier.position.x;
                     soldier.sprite.y = soldier.position.y;
 
+                    this.scene.attackHumanSound.play();
                     //deal damage
                     monster.health.dealDamage(soldier.damage)
                     soldier.health.dealDamage(monster.getDamage())

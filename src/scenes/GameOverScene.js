@@ -8,7 +8,7 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
+        this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
     }
 
     create() {
@@ -18,20 +18,22 @@ export default class GameOverScene extends Phaser.Scene {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
 
-        this.add.text(centerX - 120, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
+        this.add.text(centerX - 130, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
+        this.add.text(centerX - 90, centerY - 70, 'The King is Dead', { fontFamily: 'custom', fontSize: '30px' });
 
-        const restartButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
-        restartButton.setInteractive();
+        const button = this.add.sprite(centerX, centerY + 90, 'button', 0);
 
-        restartButton.on('pointerover', () => {
-            restartButton.setFrame(2);
+        // Make the button interactive if needed
+        button.setInteractive();
+
+        // Add an event listener for when the button is clicked if needed
+        button.on('pointerdown', () => {
+            button.setFrame(1);
         });
 
-        restartButton.on('pointerout', () => {
-            restartButton.setFrame(0);
+        button.on('pointerup', () => {
+            this.restartGame()
         });
-
-        restartButton.on('pointerup', this.restartGame, this);
     }
 
     restartGame() {

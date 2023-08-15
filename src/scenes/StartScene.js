@@ -4,7 +4,7 @@ export default class StartScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
+        this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 192, frameHeight: 96 });
     }
 
     create() {
@@ -12,20 +12,21 @@ export default class StartScene extends Phaser.Scene {
         const centerY = this.cameras.main.centerY;
 
         this.add.text(centerX - 200, centerY - 150, 'Eternal Eclipse', { fontFamily: 'custom', fontSize: '70px', });
+        const button = this.add.sprite(centerX, centerY, 'button', 0);
 
-        const startButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
-        startButton.setInteractive();
+        // Make the button interactive if needed
+        button.setInteractive();
 
-        startButton.on('pointerover', () => {
-            startButton.setFrame(2);
+        // Add an event listener for when the button is clicked if needed
+        button.on('pointerdown', () => {
+            button.setFrame(1);
         });
 
-        startButton.on('pointerout', () => {
-            startButton.setFrame(0);
+        button.on('pointerup', () => {
+            this.startGame()
         });
-
-        startButton.on('pointerup', this.startGame, this);
     }
+
 
     startGame() {
         this.scene.start('MainScene');

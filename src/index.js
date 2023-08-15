@@ -101,7 +101,7 @@ class MainScene extends Phaser.Scene {
             this.soldierDeployTimer.stop()
         }
 
-        if (this.soldierList.length < 0) {
+        if (this.soldierList.length < 12) {
             this.entityDeployer.deploySoldier()
         }
         else {
@@ -178,7 +178,13 @@ class MainScene extends Phaser.Scene {
     initSounds() {
         this.themeSound = this.sound.add('themeSound');
         this.themeSound.setVolume(.1);
+        this.themeSound2 = this.sound.add('themeSound2');
+        this.themeSound2.setVolume(.4);
         this.themeSound.play();
+
+        this.themeSound.once('complete', () => {
+            this.themeSound2.play();
+        });
 
         this.soldierDeathSound = this.sound.add('death')
         this.soldierDeathSound.setVolume(.6);
@@ -188,6 +194,9 @@ class MainScene extends Phaser.Scene {
 
         this.gameOverSound = this.sound.add('gameOver')
         this.gameOverSound.setVolume(.5);
+
+        this.attackHumanSound = this.sound.add('attackHuman')
+        this.attackHumanSound.setVolume(.08);
     }
 
     draw() {
@@ -209,9 +218,11 @@ class MainScene extends Phaser.Scene {
         this.load.spritesheet('skeleton', 'assets/sprites/skeleton.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('player', 'assets/sprites/slime.png', { frameWidth: 16, frameHeight: 16 });
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
+        this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
         this.load.audio('gameOver', 'assets/music/gameOverTheme.mp3');
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
+        this.load.audio('attackHuman', 'assets/sfx/attackHuman.mp3');
     }
     loadProgressBar() {
         this.progressBar = this.add.image(this.sys.game.config.width / 2, 20, 'progress_bar');
