@@ -19,12 +19,12 @@ export default class AnimationSystem {
         if (entity.spriteAnimation) {
             const hiddenFrameConfig = {start: entity.spriteAnimation.frameConfig.start + 4, end: entity.spriteAnimation.frameConfig.end + 4}
             this.scene.anims.create({
-                key: entity.spriteAnimation.key,
+                key: entity.spriteAnimation.key + '-hidden',
                 frames: this.scene.anims.generateFrameNumbers('monster_sprites', hiddenFrameConfig),
                 frameRate: 5,
                 repeat: -1,
             });
-            entity.sprite.anims.play(entity.spriteAnimation.key);
+            entity.sprite.anims.play(entity.spriteAnimation.key +  '-hidden');
         }
     }
 

@@ -13,4 +13,14 @@ export default class Monster extends Entity {
             return this.damage
         }
     }
+
+    setHidden(scene) {
+        this.hidden = true
+        scene.animationSystem.addHiddenMonsterAnimation(this)
+    }
+
+    setVisible(scene) {
+        this.hidden = false
+        scene.animationSystem.addMonsterAnimation(this)
+    }
 }

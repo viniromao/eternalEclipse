@@ -25,7 +25,7 @@ export default class EntityDeployer {
                 randomX = 0
                 break;
             case 2:
-                randomY = 0
+                randomY = 70
                 break;
             case 3:
                 randomX = this.scene.game.config.width
@@ -42,7 +42,7 @@ export default class EntityDeployer {
         const health = new HealthSystem(this.scene, position, 3)
         const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, health, 1, true)
 
-        this.scene.animationSystem.addMonsterAnimation(entity);
+        this.scene.animationSystem.addHiddenMonsterAnimation(entity);
 
         this.scene.monstersList.push(entity)
 
@@ -81,9 +81,8 @@ export default class EntityDeployer {
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent('archer', { start: 28, end: 31 });
         const deathAnimation = new SpriteAnimationComponent('archerDeath', { start: 20, end: 23 });
-        const attackAnimation = new SpriteAnimationComponent('archerAttack', { start: 16, end: 19 });
         const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 2)
+        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, null, finalPosition, 0, health, 2)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
 

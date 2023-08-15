@@ -19,6 +19,9 @@ export default class CollisionSystem {
                     new Phaser.Geom.Circle(monster.position.x, monster.position.y, this.collisionDistance),
                     new Phaser.Geom.Circle(this.scene.player.position.x, this.scene.player.position.y, this.collisionDistance))) {
                     this.scene.player.health.dealDamage(monster.getDamage())
+                    if (this.scene.player.health.currentHealth <= 0) {
+                        this.scene.gameOver();
+                    }
                     monster.markedForDestruction = true
                 }
             }
@@ -32,7 +35,9 @@ export default class CollisionSystem {
                     new Phaser.Geom.Circle(monster.position.x, monster.position.y, this.collisionDistance),
                     new Phaser.Geom.Circle(soldier.position.x, soldier.position.y, this.collisionDistance))) {
 
-                    this.scene.animationSystem.addGoodGuyCustomAnimation(soldier, soldier.attackAnimation, null, 8)
+                    if (soldier.attackAnimation) {
+                        this.scene.animationSystem.addGoodGuyCustomAnimation(soldier, soldier.attackAnimation, null, 8)
+                    }
                     // Calculate the angle between the monster and soldier
                     const angle = Phaser.Math.Angle.Between(
                         monster.position.x, monster.position.y,
@@ -42,8 +47,8 @@ export default class CollisionSystem {
                     // Move monster and soldier away from each other
                     monster.position.x += Math.cos(angle + Math.PI) * this.dodgeDistance;
                     monster.position.y += Math.sin(angle + Math.PI) * this.dodgeDistance;
-                    soldier.position.x += Math.cos(angle) * this.dodgeDistance/2;
-                    soldier.position.y += Math.sin(angle) * this.dodgeDistance/2;
+                    soldier.position.x += Math.cos(angle) * this.dodgeDistance / 2;
+                    soldier.position.y += Math.sin(angle) * this.dodgeDistance / 2;
 
                     // Update sprite positions
                     monster.sprite.x = monster.position.x;

@@ -1,7 +1,6 @@
 
 import Line from "./components/Line.js"
 import ArcherRange from "./components/ArcherRange.js"
-import Target from "./components/Target.js"
 
 import TimerManager from "./systems/TimeManager.js"
 import SoldierManagementSystem from "./systems/SoldierManagementSystem.js"
@@ -10,78 +9,11 @@ import AnimationSystem from "./systems/AnimationSystem.js"
 import EntityDeployer from "./systems/EntityDeployer.js"
 import CollisionSystem from "./systems/CollisionSystem.js"
 import DeathSystem from "./systems/DeathSystem.js"
-import PositionComponent from "./components/PositionComponent.js"
 import FogOfWar from "./systems/FogOfWar.js"
 
-class GameOverScene extends Phaser.Scene {
-    constructor() {
-        super({ key: 'GameOverScene' });
-    }
+import StartScene from "./scenes/StartScene.js"
+import GameOverScene from "./scenes/GameOverScene.js"
 
-    preload() {
-        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
-    }
-
-    create() {
-        // Add a black background
-        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000).setOrigin(0, 0);
-
-        const centerX = this.cameras.main.centerX;
-        const centerY = this.cameras.main.centerY;
-
-        this.add.text(centerX - 120, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
-
-        const restartButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
-        restartButton.setInteractive();
-
-        restartButton.on('pointerover', () => {
-            restartButton.setFrame(2);
-        });
-
-        restartButton.on('pointerout', () => {
-            restartButton.setFrame(0);
-        });
-
-        restartButton.on('pointerup', this.restartGame, this);
-    }
-
-    restartGame() {
-        this.scene.start('MainScene');
-    }
-}
-class StartScene extends Phaser.Scene {
-    constructor() {
-        super({ key: 'StartScene' });
-    }
-
-    preload() {
-        this.load.spritesheet('start_button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
-    }
-
-    create() {
-        const centerX = this.cameras.main.centerX;
-        const centerY = this.cameras.main.centerY;
-
-        this.add.text(centerX - 150, centerY - 150, 'Game Title', { fontFamily: 'custom', fontSize: '70px', });
-
-        const startButton = this.add.sprite(centerX, centerY + 60, 'start_button', 0);
-        startButton.setInteractive();
-
-        startButton.on('pointerover', () => {
-            startButton.setFrame(2);
-        });
-
-        startButton.on('pointerout', () => {
-            startButton.setFrame(0);
-        });
-
-        startButton.on('pointerup', this.startGame, this);
-    }
-
-    startGame() {
-        this.scene.start('MainScene');
-    }
-}
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -89,7 +21,6 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
-
         this.createSystems();
         this.createPlayer();
         this.initInputs();
@@ -97,8 +28,6 @@ class MainScene extends Phaser.Scene {
         this.initTimers();
         this.initSounds();
         this.loadProgressBar();
-
-        this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
     }
 
     togglePause() {
@@ -109,13 +38,14 @@ class MainScene extends Phaser.Scene {
 
     gameOver() {
         this.togglePause();
-        this.scene.launch('GameOverScene');
+        this.themeSound.stop();
+        this.gameOverSound.play();
+        this.scene.launch('GameOverScene', this.gameOverSound);
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
-            this.togglePause();
-        }
+
+        this.inputListener()
 
         // If the game is paused, don't execute further update logic
         if (this.isPaused) {
@@ -135,6 +65,7 @@ class MainScene extends Phaser.Scene {
 
         this.monstersList.forEach(monster => {
             this.movementSystem.update(monster, this);
+            this.fogOfWar.isHidden(this.firePlace, monster, this.fogOfWar.sightRadius)
         });
         this.soldierList.forEach(soldier => {
             this.movementSystem.update(soldier, this);
@@ -148,11 +79,6 @@ class MainScene extends Phaser.Scene {
             this.deathSystem.update(this.monstersList);
             this.deathSystem.update(this.archersList);
             this.deathSystem.update(this.soldierList);
-        }
-
-        //if condition to gameOver
-        if (Phaser.Input.Keyboard.JustDown(this.gameOverKey)) {
-            this.gameOver();
         }
 
         this.draw();
@@ -175,7 +101,7 @@ class MainScene extends Phaser.Scene {
             this.soldierDeployTimer.stop()
         }
 
-        if (this.soldierList.length < 12) {
+        if (this.soldierList.length < 0) {
             this.entityDeployer.deploySoldier()
         }
         else {
@@ -189,7 +115,7 @@ class MainScene extends Phaser.Scene {
 
     createSystems() {
         this.targetSystem = []
-        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 200)
+        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);
@@ -205,11 +131,23 @@ class MainScene extends Phaser.Scene {
 
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
+        this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+
         // this.input.on('pointermove', (pointer) => {
         //     if (this.archerRange != null) {
         //         this.archerRange.draw(pointer.x, pointer.y);
         //     }
         // });
+    }
+
+    inputListener() {
+        if (Phaser.Input.Keyboard.JustDown(this.gameOverKey)) {
+            this.gameOver();
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
+            this.togglePause();
+        }
     }
 
     initData() {
@@ -247,6 +185,9 @@ class MainScene extends Phaser.Scene {
 
         this.monsterDeathSound = this.sound.add('monsterDeath')
         this.monsterDeathSound.setVolume(.1);
+
+        this.gameOverSound = this.sound.add('gameOver')
+        this.gameOverSound.setVolume(.5);
     }
 
     draw() {
@@ -268,6 +209,7 @@ class MainScene extends Phaser.Scene {
         this.load.spritesheet('skeleton', 'assets/sprites/skeleton.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('player', 'assets/sprites/slime.png', { frameWidth: 16, frameHeight: 16 });
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
+        this.load.audio('gameOver', 'assets/music/gameOverTheme.mp3');
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
     }
@@ -279,8 +221,8 @@ class MainScene extends Phaser.Scene {
 
 var config = {
     type: Phaser.AUTO,
-    width: 512,
-    height: 480,
+    width: 640,
+    height: 448,
     physics: {
         default: 'arcade',
         arcade: {

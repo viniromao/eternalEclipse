@@ -7,6 +7,22 @@ export default class FogOfWar {
         this.graphics = this.scene.add.graphics();
     }
 
+    isHidden(lightSourcePosition, entity, radius) {
+        const dx = entity.position.x - lightSourcePosition.position.x;
+        const dy = entity.position.y - lightSourcePosition.position.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > radius) {
+            if (entity.hidden == false)
+                entity.setHidden(this.scene)
+        } else {
+            if (entity.hidden == true) {
+                entity.setVisible(this.scene)
+            }
+
+        }
+    }
+
     drawFog(entities) {
         // Clear previous fog
         this.graphics.clear();
