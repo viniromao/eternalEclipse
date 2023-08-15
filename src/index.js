@@ -29,6 +29,7 @@ class MainScene extends Phaser.Scene {
         this.initTimers();
         this.initSounds();
         this.loadProgressBar();
+        this.grassBackground = new GrassBackground(this);
     }
 
     togglePause() {
