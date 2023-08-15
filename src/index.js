@@ -14,6 +14,7 @@ import FogOfWar from "./systems/FogOfWar.js"
 import StartScene from "./scenes/StartScene.js"
 import GameOverScene from "./scenes/GameOverScene.js"
 import GrassBackground from "./scenes/Background.js"
+import LoadingScene from "./scenes/Loading.js"
 
 
 class MainScene extends Phaser.Scene {
@@ -211,21 +212,7 @@ class MainScene extends Phaser.Scene {
 
     }
 
-    preload() {
-        this.load.spritesheet('progress_bar', 'assets/ui/progress_bar.png', { frameWidth: 32, frameHeight: 1000 });
-        this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
-        this.load.spritesheet('goodGuys', 'assets/sprites/goodGuysSprites.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('skeleton', 'assets/sprites/skeleton.png', { frameWidth: 16, frameHeight: 16 });
-        this.load.spritesheet('player', 'assets/sprites/slime.png', { frameWidth: 16, frameHeight: 16 });
-        this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
-        this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
-        this.load.audio('gameOver', 'assets/music/gameOverTheme.mp3');
-        this.load.audio('death', 'assets/sfx/death2.mp3');
-        this.load.audio('monsterDeath', 'assets/sfx/death.wav');
-        this.load.audio('attackHuman', 'assets/sfx/attackHuman.mp3');
-    }
+
     loadProgressBar() {
         this.progressBar = this.add.image(this.sys.game.config.width / 2, 20, 'progress_bar');
         this.progressBar.setScale(1);
@@ -241,8 +228,9 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    },
-    scene: [StartScene, MainScene, GameOverScene],
+    },    scene: [LoadingScene, StartScene, MainScene, GameOverScene],
+
+    scene: [LoadingScene, StartScene, MainScene, GameOverScene],
     backgroundColor: '#000'
 };
 
