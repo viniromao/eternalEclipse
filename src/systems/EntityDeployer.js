@@ -42,7 +42,7 @@ export default class EntityDeployer {
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
         const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
 
