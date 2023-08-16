@@ -13,7 +13,7 @@ export default class EntityDeployer {
         this.scene = scene;
     }
 
-    deployMonster(health, damage, monsterType) {
+    deployMonster(stats) {
         let randomSide = Phaser.Math.Between(1, 3);
         let randomCharacter = (Phaser.Math.Between(1, 10) * 8) - 8;
 
@@ -35,14 +35,14 @@ export default class EntityDeployer {
                 break;
         }
 
-        randomCharacter = monsterType ? monsterType * 8 - 8 : randomCharacter
+        randomCharacter = stats.monsterType ? stats.monsterType * 8 - 8 : randomCharacter
 
         const sprite = this.scene.add.sprite(randomX, randomY, 'monster_sprites');
         const position = new PositionComponent(randomX, randomY);
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
-        const healthSystem = new HealthSystem(this.scene, position, health ? health : 3)
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, damage ? damage : 1, true)
+        const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
 
@@ -102,6 +102,19 @@ export default class EntityDeployer {
     deployTheKing() {
         const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
         const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height - 25);
+        const velocity = new VelocityComponent(0, 0);
+        const health = new HealthSystem(this.scene, position, 5)
+        const finalPosition = position;
+        const spriteAnimation = new SpriteAnimationComponent('king', { start: 4, end: 7 });
+
+        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, null, null, finalPosition, health, 0)
+
+        this.scene.animationSystem.addGoodGuyAnimation(this.scene.player);
+    }
+
+    deployTheKingLvl2() {
+        const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
+        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height/2);
         const velocity = new VelocityComponent(0, 0);
         const health = new HealthSystem(this.scene, position, 5)
         const finalPosition = position;

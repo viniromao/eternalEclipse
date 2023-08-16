@@ -41,7 +41,7 @@ export default class DeathSystem {
         if(entity instanceof Soldier) {
             this.scene.soldierDeathSound.play();
         } else {
-            this.scene.monsterDeathSound.play();
+            // this.scene.monsterDeathSound.play();
         }
     }
 }
