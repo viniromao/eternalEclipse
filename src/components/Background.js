@@ -25,7 +25,6 @@ export default class GrassBackground {
     }
 
     initGrassAnimation() {
-        console.log('animou')
         this.scene.anims.create({
             key: 'grassAnimation',
             frames: this.scene.anims.generateFrameNumbers('background', { start: 20, end: 23 }),
@@ -34,7 +33,6 @@ export default class GrassBackground {
         });
 
         this.grassSprites.forEach(sprite => {
-            console.log(sprite)
             sprite.play('grassAnimation');
         });
     }

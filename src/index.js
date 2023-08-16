@@ -16,6 +16,7 @@ import StartScene from "./scenes/StartScene.js"
 import GameOverScene from "./scenes/GameOverScene.js"
 import GrassBackground from "./components/Background.js"
 import LoadingScene from "./scenes/Loading.js"
+import UpgradeScene from "./scenes/UpgradeScene.js"
 
 
 class MainScene extends Phaser.Scene {
@@ -35,10 +36,14 @@ class MainScene extends Phaser.Scene {
 
     togglePause() {
         this.isPaused = !this.isPaused;
+        this.physics.world.timeScale = this.isPaused ? 0 : 1;
     }
 
-
-
+    upgrade() {
+        this.scene.launch('UpgradeScene');
+        this.togglePause(); // Pause the game
+    }
+    
     gameOver() {
         this.grassBackground.destroySprites()
         this.togglePause();
@@ -49,7 +54,7 @@ class MainScene extends Phaser.Scene {
 
     update() {
 
-        this.inputListener()
+        this.inputListener();
 
         // If the game is paused, don't execute further update logic
         if (this.isPaused) {
@@ -137,6 +142,8 @@ class MainScene extends Phaser.Scene {
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+        
+        this.upgradeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
 
         // this.input.on('pointermove', (pointer) => {
         //     if (this.archerRange != null) {
@@ -146,6 +153,10 @@ class MainScene extends Phaser.Scene {
     }
 
     inputListener() {
+        if (Phaser.Input.Keyboard.JustDown(this.upgradeKey)) {
+            this.upgrade();
+        }
+
         if (Phaser.Input.Keyboard.JustDown(this.gameOverKey)) {
             this.gameOver();
         }
@@ -230,7 +241,8 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, StartScene, MainScene, GameOverScene],
+    },  
+    scene: [LoadingScene,StartScene, MainScene, UpgradeScene, GameOverScene],
     backgroundColor: '#000'
 };
 

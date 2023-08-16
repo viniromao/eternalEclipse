@@ -8,7 +8,6 @@ export default class GameOverScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
     }
 
     create() {
