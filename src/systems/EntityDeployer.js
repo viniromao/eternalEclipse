@@ -13,7 +13,7 @@ export default class EntityDeployer {
         this.scene = scene;
     }
 
-    deployMonster(health, damage, monsterType) {
+    deployMonster(stats) {
         let randomSide = Phaser.Math.Between(1, 3);
         let randomCharacter = (Phaser.Math.Between(1, 10) * 8) - 8;
 
@@ -35,14 +35,14 @@ export default class EntityDeployer {
                 break;
         }
 
-        randomCharacter = monsterType ? monsterType * 8 - 8 : randomCharacter
+        randomCharacter = stats.monsterType ? stats.monsterType * 8 - 8 : randomCharacter
 
         const sprite = this.scene.add.sprite(randomX, randomY, 'monster_sprites');
         const position = new PositionComponent(randomX, randomY);
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
-        const healthSystem = new HealthSystem(this.scene, position, health ? health : 3)
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, damage ? damage : 1, true)
+        const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
 

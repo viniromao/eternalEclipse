@@ -2,7 +2,6 @@
 import Line from "./components/Line.js"
 import ArcherRange from "./components/ArcherRange.js"
 
-import TimerManager from "./systems/TimeManager.js"
 import SoldierManagementSystem from "./systems/SoldierManagementSystem.js"
 import MovementSystem from "./systems/MovementSystem.js"
 import AnimationSystem from "./systems/AnimationSystem.js"
@@ -23,18 +22,31 @@ class MainScene extends Phaser.Scene {
         super({ key: 'MainScene' });
     }
 
+    init() {
+        this.initData();
+
+    }
+
     create() {
+        this.initSounds();
+        this.initInputs();
+        this.loadProgressBar();
+
+
         this.createSystems();
         this.createPlayer();
-        this.initInputs();
-        this.initData();
-        this.initTimers();
-        this.initSounds();
-        this.loadProgressBar();
+        this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
+        this.entityDeployer.deployFireplace()
+
+
     }
 
     togglePause() {
         this.isPaused = !this.isPaused;
+    }
+
+    createPlayer() {
+        this.entityDeployer.deployTheKing();
     }
 
 
@@ -43,6 +55,7 @@ class MainScene extends Phaser.Scene {
         this.grassBackground.destroySprites()
         this.togglePause();
         this.themeSound.stop();
+        this.themeSound2.stop();
         this.gameOverSound.play();
         this.scene.launch('GameOverScene', this.gameOverSound);
     }
@@ -88,45 +101,16 @@ class MainScene extends Phaser.Scene {
         this.draw();
     }
 
-    createMonster() {
-        if (this.isPaused) {
-            return;
-        }
-        this.entityDeployer.deployMonster(10, 1, 1)
-    }
-
-    createSoldier() {
-        if (this.isPaused) {
-            return;
-        }
-        if (this.archersList.length < 4) {
-            this.entityDeployer.deployArcher()
-        } else {
-            this.soldierDeployTimer.stop()
-        }
-
-        if (this.soldierList.length < 12) {
-            this.entityDeployer.deploySoldier()
-        }
-        else {
-            this.acherDeployTimer.stop()
-        }
-    }
-
-    createPlayer() {
-        this.entityDeployer.deployTheKing();
-    }
-
     createSystems() {
         this.targetSystem = []
-        this.levelProgressionSystem = new LevelProgressionSystem(this)
         this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);
         this.animationSystem = new AnimationSystem(this);
         this.movementSystem = new MovementSystem(1);
-        this.deathSystem = new DeathSystem(this)
+        this.deathSystem = new DeathSystem(this);
+        this.levelProgressionSystem = new LevelProgressionSystem(this);
     }
 
     initInputs() {
@@ -155,30 +139,15 @@ class MainScene extends Phaser.Scene {
         }
     }
 
+
     initData() {
         this.grassBackground = new GrassBackground(this);
         this.isPaused = false;
-        this.entityDeployer.deployFireplace()
         this.archerRange = new ArcherRange(this, 50);
-        this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
         this.soldierList = []
         this.monstersList = []
         this.archersList = []
         this.counter = 0
-    }
-
-    initTimers() {
-        this.monsterDeployTimer = new TimerManager(this, 1000, this.createMonster);
-        this.monsterDeployTimer.start();
-
-        this.soldierDeployTimer = new TimerManager(this, 300, this.createSoldier);
-        this.soldierDeployTimer.start();
-
-        this.acherDeployTimer = new TimerManager(this, 300, this.createSoldier);
-        this.acherDeployTimer.start();
-
-        // this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
-        // this.archerFireTimer.start();
     }
 
     initSounds() {

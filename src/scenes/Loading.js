@@ -11,7 +11,7 @@ export default class LoadingScene extends Phaser.Scene {
         const loadingText = this.add.text(centerX - 100, centerY - 50, baseText, { fontFamily: 'custom', fontSize: '50px' });
 
         this.time.addEvent({
-            delay: 500,
+            delay: 50,
             callback: () => {
                 dots = (dots + 1) % 4;
                 const text = baseText + '.'.repeat(dots);
