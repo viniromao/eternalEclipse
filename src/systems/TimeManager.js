@@ -3,20 +3,21 @@ export default class TimerManager {
         this.scene = scene;
         this.delay = delay;
         this.callback = callback;
-        this.scope = scope
+        this.scope = scope;
+        this.timedEvent = []
 
     }
 
     start() {
-        this.timedEvent = this.scene.time.addEvent({
+        this.timedEvent.push(this.scene.time.addEvent({
             delay: this.delay,
             callback: this.callback,
             callbackScope: this.scope,
             loop: true,
-        });
+        }));
     }
 
     stop() {
-        this.timedEvent.remove();
+        this.timedEvent.forEach(timedEvent => timedEvent.remove())
     }
 }

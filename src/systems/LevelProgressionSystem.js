@@ -4,14 +4,11 @@ import GameDataComponent from "../components/GameDataComponent.js";
 export default class LevelProgressionSystem {
     constructor(scene) {
         this.scene = scene
-        this.clock();
         this.gameData = new GameDataComponent()
         this.initTimers();
-
-
     }
 
-    clock() {
+    level1() {
         this.elapsedTime = 0;
 
         this.scene.time.addEvent({
@@ -32,11 +29,56 @@ export default class LevelProgressionSystem {
                 if (this.elapsedTime === 90) {
                     this.batDeployTimer.start();
                 }
+
+
+                if (this.elapsedTime === 5) {
+                    this.monsterDeployTimer.stop();
+                    this.scorpionDeployTimer.stop();
+                    this.wormDeployTimer.stop();
+                    this.batDeployTimer.stop();
+                    this.skeletonDeployTimer.stop();
+                    this.monsterSwarm.stop();
+                    this.soldierDeployTimer.stop();
+                    this.acherDeployTimer.stop();
+                    this.scene.stopScene();
+                    this.scene.scene.stop('MainScene');
+                    this.scene.scene.launch('Level2Scene');
+
+                }
             },
             callbackScope: this,
             loop: true
         });
     }
+
+    level2() {
+        this.elapsedTime = 0;
+
+        this.scene.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.elapsedTime += 1;
+
+                if (this.elapsedTime === 30) {
+                    this.monsterSwarm.stop();
+                    this.wormDeployTimer.start()
+                }
+
+                if (this.elapsedTime === 60) {
+                    this.scorpionDeployTimer.start()
+
+                }
+
+                if (this.elapsedTime === 90) {
+                    this.batDeployTimer.start();
+                }
+
+            },
+            callbackScope: this,
+            loop: true
+        });
+    }
+
 
     initTimers() {
 

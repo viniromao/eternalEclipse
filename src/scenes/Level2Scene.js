@@ -1,26 +1,23 @@
 
-import Line from "./components/Line.js"
-import ArcherRange from "./components/ArcherRange.js"
+import Line from "../components/Line.js"
+import ArcherRange from "../components/ArcherRange.js"
 
-import SoldierManagementSystem from "./systems/SoldierManagementSystem.js"
-import MovementSystem from "./systems/MovementSystem.js"
-import AnimationSystem from "./systems/AnimationSystem.js"
-import EntityDeployer from "./systems/EntityDeployer.js"
-import CollisionSystem from "./systems/CollisionSystem.js"
-import DeathSystem from "./systems/DeathSystem.js"
-import FogOfWar from "./systems/FogOfWar.js"
-import LevelProgressionSystem from "./systems/LevelProgressionSystem.js"
+import SoldierManagementSystem from "../systems/SoldierManagementSystem.js"
+import MovementSystem from "../systems/MovementSystem.js"
+import AnimationSystem from "../systems/AnimationSystem.js"
+import EntityDeployer from "../systems/EntityDeployer.js"
+import CollisionSystem from "../systems/CollisionSystem.js"
+import DeathSystem from "../systems/DeathSystem.js"
+import FogOfWar from "../systems/FogOfWar.js"
+import LevelProgressionSystem from "../systems/LevelProgressionSystem.js"
 
-import StartScene from "./scenes/StartScene.js"
-import GameOverScene from "./scenes/GameOverScene.js"
-import GrassBackground from "./components/Background.js"
-import LoadingScene from "./scenes/Loading.js"
-import Level2Scene from "./scenes/Level2Scene.js"
+import GameOverScene from "../scenes/GameOverScene.js"
+import GrassBackground from "../components/Background.js"
 
 
-class MainScene extends Phaser.Scene {
+export default class Level2Scene extends Phaser.Scene {
     constructor() {
-        super({ key: 'MainScene' });
+        super({ key: 'Level2Scene' });
     }
 
     init() {
@@ -32,8 +29,6 @@ class MainScene extends Phaser.Scene {
         this.initSounds();
         this.initInputs();
         this.loadProgressBar();
-
-
         this.createSystems();
         this.createPlayer();
         this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
@@ -47,14 +42,10 @@ class MainScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.entityDeployer.deployTheKing();
+        this.entityDeployer.deployTheKingLvl2();
     }
 
 
-    stopScene() {
-        this.themeSound.stop();
-        this.themeSound2.stop();
-    }
 
     gameOver() {
         this.grassBackground.destroySprites()
@@ -77,8 +68,8 @@ class MainScene extends Phaser.Scene {
         this.counter++
 
         if (this.counter % 10 == 0) {
-            this.soldierManagementSystem.updateSemiCirclePositions()
-            this.soldierManagementSystem.updateArchersSemiCirclePositions()
+            this.soldierManagementSystem.updateCirclePositions()
+            this.soldierManagementSystem.updateArchersCirclePositions()
         }
 
         if (this.counter % 5 == 0) {
@@ -116,7 +107,7 @@ class MainScene extends Phaser.Scene {
         this.movementSystem = new MovementSystem(1);
         this.deathSystem = new DeathSystem(this);
         this.levelProgressionSystem = new LevelProgressionSystem(this);
-        this.levelProgressionSystem.level1()
+        this.levelProgressionSystem.level2();
     }
 
     initInputs() {
@@ -195,18 +186,3 @@ class MainScene extends Phaser.Scene {
         this.progressBar.setScale(1);
     }
 }
-
-var config = {
-    type: Phaser.AUTO,
-    width: 640,
-    height: 448,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 200 }
-        }
-    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, GameOverScene],
-    backgroundColor: '#000'
-};
-
-var game = new Phaser.Game(config);

@@ -112,6 +112,19 @@ export default class EntityDeployer {
         this.scene.animationSystem.addGoodGuyAnimation(this.scene.player);
     }
 
+    deployTheKingLvl2() {
+        const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
+        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height/2);
+        const velocity = new VelocityComponent(0, 0);
+        const health = new HealthSystem(this.scene, position, 5)
+        const finalPosition = position;
+        const spriteAnimation = new SpriteAnimationComponent('king', { start: 4, end: 7 });
+
+        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, null, null, finalPosition, health, 0)
+
+        this.scene.animationSystem.addGoodGuyAnimation(this.scene.player);
+    }
+
     deployFireplace() {
         const spriteAnimation = new SpriteAnimationComponent('firePlace', { start: 12, end: 15 });
         const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y - 45)
