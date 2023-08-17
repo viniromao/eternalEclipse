@@ -5,6 +5,10 @@ export default class UpgradeScene extends Phaser.Scene {
         super({ key: 'UpgradeScene' });
     }
 
+    init(data) {
+        this.currentScene = data.scene
+    }
+
     create() {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
@@ -39,9 +43,8 @@ export default class UpgradeScene extends Phaser.Scene {
         }
 
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ESC) {
-            // Exit the UpgradeScene and return to MainScene
             this.scene.stop('UpgradeScene');
-            this.scene.resume('MainScene');
+            this.scene.resume(this.currentScene);
         }
         
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
@@ -50,8 +53,8 @@ export default class UpgradeScene extends Phaser.Scene {
                 const upgradeSystem = new UpgradeSystem(gameData);
                 upgradeSystem.applyUpgrades();
                 this.scene.stop('UpgradeScene');
-                const mainScene = this.scene.get('MainScene');
-                this.scene.resume('MainScene');
+                const mainScene = this.scene.get(this.currentScene);
+                this.scene.resume(this.currentScene);
         }
     }
 }

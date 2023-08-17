@@ -18,6 +18,8 @@ import UpgradeScene from "./scenes/UpgradeScene.js"
 import Level2Scene from "./scenes/Level2Scene.js"
 import ProgressBarManager from './systems/ProgressBarManager.js';
 import GameDataComponent from './components/GameDataComponent.js';
+import VictoryScene from "./scenes/VictoryScene.js"
+import LoreScene from "./scenes/LoreScene.js"
 
 
 class MainScene extends Phaser.Scene {
@@ -28,7 +30,7 @@ class MainScene extends Phaser.Scene {
     }
 
     upgrade() {
-        this.scene.launch('UpgradeScene', { gameData: this.gameData }); // Pass gameData to UpgradeScene
+        this.scene.launch('UpgradeScene', { gameData: this.gameData, scene: 'MainScene' }); 
         this.togglePause(); // Pause the game
     }
 
@@ -48,14 +50,14 @@ class MainScene extends Phaser.Scene {
         this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
         this.entityDeployer.deployFireplace()
 
-        this.add.image(this.cameras.main.width /2, this.cameras.main.height /2, 'border');
+        this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'border');
     }
 
     togglePause() {
         this.isPaused = !this.isPaused;
         this.physics.world.timeScale = this.isPaused ? 0 : 1;
     }
-    
+
     createPlayer() {
         this.entityDeployer.deployTheKing();
     }
@@ -72,7 +74,7 @@ class MainScene extends Phaser.Scene {
         this.themeSound.stop();
         this.themeSound2.stop();
         this.gameOverSound.play();
-        this.scene.launch('GameOverScene', this.gameOverSound);
+        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'MainScene' });
     }
 
     update() {
@@ -137,7 +139,7 @@ class MainScene extends Phaser.Scene {
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
-        
+
         this.upgradeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
 
         // this.input.on('pointermove', (pointer) => {
@@ -224,7 +226,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, UpgradeScene, GameOverScene],
+    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, VictoryScene, UpgradeScene, LoreScene, GameOverScene],
     backgroundColor: '#000'
 };
 

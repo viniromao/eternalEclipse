@@ -29,6 +29,9 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 36, frameHeight: 36 });
         this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
         this.load.spritesheet('goodGuys', 'assets/sprites/goodGuysSprites.png', { frameWidth: 36, frameHeight: 36 });
+        this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 182, frameHeight: 60 });
+        this.load.audio('typewriter', 'assets/sfx/typewriter.mp3');
+        this.load.audio('victorySong', 'assets/music/victory.mp3');
         this.load.audio('startSound', 'assets/music/startScreen.mp3');
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
         this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');

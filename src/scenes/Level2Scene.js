@@ -49,7 +49,7 @@ export default class Level2Scene extends Phaser.Scene {
         this.themeSound.stop();
         this.themeSound2.stop();
         this.gameOverSound.play();
-        this.scene.launch('GameOverScene', this.gameOverSound);
+        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'Level2Scene' });
     }
 
     update() {
