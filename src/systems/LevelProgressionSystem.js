@@ -35,7 +35,7 @@ export default class LevelProgressionSystem {
                 }
 
 
-                if (this.elapsedTime === 5) {
+                if (this.elapsedTime === 100) {
                     this.monsterDeployTimer.stop();
                     this.scorpionDeployTimer.stop();
                     this.wormDeployTimer.stop();
@@ -43,10 +43,7 @@ export default class LevelProgressionSystem {
                     this.skeletonDeployTimer.stop();
                     this.monsterSwarm.stop();
                     this.acherDeployTimer.stop();
-                    this.scene.stopScene();
-                    this.scene.scene.stop('MainScene');
-                    this.scene.scene.launch('Level2Scene');
-
+                    this.verifyEndLevelTimer.start();
                 }
             },
             callbackScope: this,
@@ -64,6 +61,16 @@ export default class LevelProgressionSystem {
             delay: 1000,
             callback: () => {
                 this.elapsedTime += 1;
+
+                if (this.elapsedTime == 5) {
+                    this.piggySwarm.start();
+                }
+
+                if (this.elapsedTime == 10) {
+                    this.piggySwarm.stop();
+                    this.piggyChariotTimer.start();
+                }
+
 
                 if (this.elapsedTime === 30) {
                 }
@@ -95,7 +102,10 @@ export default class LevelProgressionSystem {
 
 
 
+
         this.piggyTimer = new TimerManager(this.scene, this, 1000, this.createPiggy);
+
+        this.piggySwarm = new TimerManager(this.scene, this, 1000, this.createPiggySwarm);
 
         this.piggyChariotTimer = new TimerManager(this.scene, this, 3000, this.createPiggyChariot);
 
@@ -113,8 +123,11 @@ export default class LevelProgressionSystem {
         this.skeletonDeployTimer = new TimerManager(this.scene, this, 3000, this.createMonster);
 
         this.monsterSwarm = new TimerManager(this.scene, this, 10000, this.createSwarm);
-      
+
         this.acherDeployTimer = new TimerManager(this.scene, this, 300, this.createSoldier);
+
+        this.verifyEndLevelTimer = new TimerManager(this.scene, this, 1000, this.verifyEndLevel);
+
 
         // this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
         // this.archerFireTimer.start();
@@ -125,6 +138,17 @@ export default class LevelProgressionSystem {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.scorpionStats)
+    }
+
+    verifyEndLevel() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        if (this.scene.monstersList.length == 0) {
+            this.scene.stopScene();
+            this.scene.scene.stop('MainScene');
+            this.scene.scene.start('VictoryScene', { nextScene: 'Level2Scene' });
+        }
     }
 
     createWorm() {
@@ -139,36 +163,44 @@ export default class LevelProgressionSystem {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.piggyStats)
-    } 
-    
+    }
+
+    createPiggySwarm() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        for (let i = 0; i < 5; i++)
+            this.scene.entityDeployer.deployMonster(this.gameData.piggyStats)
+    }
+
     createPiggyChariot() {
         if (this.scene.isPaused) {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.piggyChariotStats)
     }
-    
+
     createDinossaur() {
         if (this.scene.isPaused) {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.dinosaurStats)
-    } 
-    
+    }
+
     createMageDinossaur() {
         if (this.scene.isPaused) {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.mageDinosaurStats)
-    } 
-    
+    }
+
     createBee() {
         if (this.scene.isPaused) {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.beeStats)
-    } 
-    
+    }
+
     createDarkLordRat() {
         if (this.scene.isPaused) {
             return;

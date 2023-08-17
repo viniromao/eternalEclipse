@@ -49,7 +49,7 @@ export default class Level2Scene extends Phaser.Scene {
         this.themeSound.stop();
         this.themeSound2.stop();
         this.gameOverSound.play();
-        this.scene.launch('GameOverScene', this.gameOverSound);
+        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'Level2Scene' });
     }
 
     update() {
@@ -97,7 +97,6 @@ export default class Level2Scene extends Phaser.Scene {
         this.targetSystem = []
         this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 190)
 
-        console.log(this.fogOfWar)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 100)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);

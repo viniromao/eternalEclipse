@@ -16,6 +16,8 @@ import GameOverScene from "./scenes/GameOverScene.js"
 import GrassBackground from "./components/Background.js"
 import LoadingScene from "./scenes/Loading.js"
 import Level2Scene from "./scenes/Level2Scene.js"
+import VictoryScene from "./scenes/VictoryScene.js"
+import LoreScene from "./scenes/LoreScene.js"
 
 
 class MainScene extends Phaser.Scene {
@@ -62,7 +64,7 @@ class MainScene extends Phaser.Scene {
         this.themeSound.stop();
         this.themeSound2.stop();
         this.gameOverSound.play();
-        this.scene.launch('GameOverScene', this.gameOverSound);
+        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'MainScene' });
     }
 
     update() {
@@ -205,7 +207,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, GameOverScene],
+    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, VictoryScene, LoreScene, GameOverScene],
     backgroundColor: '#000'
 };
 
