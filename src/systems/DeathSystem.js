@@ -1,4 +1,5 @@
 import Soldier from "../components/Soldier.js"
+import Monster from "../components/Monster.js"
 
 export default class DeathSystem {
     constructor(scene) {
@@ -14,23 +15,13 @@ export default class DeathSystem {
                 entity.markedForDestruction = false;
                 entity.dying = true;
                 this.playDeathSounds(entity);
-                console.log("Monster died:")
 
-                // Update XP bar when a monster dies
-                if (!(entity instanceof Soldier)) {
-                    const monsterType = entity.monsterType;
-                    console.log("Monster Type:", monsterType);
-                    
-                    const xpFromMonster = this.scene.gameData[monsterType]?.xp;
-                    console.log("XP from Monster:", xpFromMonster);
-                    
-                    this.scene.progressBarManager.gainXP(xpFromMonster);
+                if (entity instanceof Monster) {
+                    this.scene.progressBarManager.gainXP(entity.xp);
                 }
                 
-
                 this.animateDeath(entity, () => {
                     entity.destroy();
-                    // Remove the entity from the entities array if needed
                     const index = entities.indexOf(entity);
                     if (index !== -1) {
                         entities.splice(index, 1);
