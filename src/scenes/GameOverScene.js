@@ -7,12 +7,10 @@ export default class GameOverScene extends Phaser.Scene {
         this.gameOverSound = gameOverSound;
     }
 
-    preload() {
-    }
-
     create() {
-        // Add a black background
         this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000).setOrigin(0, 0);
+
+        this.add.image(this.cameras.main.width /2, this.cameras.main.height /2, 'border');
 
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;

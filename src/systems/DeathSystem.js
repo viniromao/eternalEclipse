@@ -15,6 +15,7 @@ export default class DeathSystem {
                 entity.markedForDestruction = false
                 entity.dying = true
                 this.playDeathSounds(entity)
+                //
                 this.animateDeath(entity, () => {
                     
                     entity.destroy();
@@ -34,7 +35,6 @@ export default class DeathSystem {
         } else {
             callback()
         }
-
     }
 
     playDeathSounds(entity) {

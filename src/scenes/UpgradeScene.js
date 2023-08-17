@@ -13,10 +13,10 @@ export default class UpgradeScene extends Phaser.Scene {
         // Add a key event listener
         this.input.keyboard.on('keydown', this.handleKeyDown, this);
     
-        const icons1 = this.add.sprite(centerX - 240, centerY - 100, 'upgradeIcons', 0).setInteractive().setScale(.3);
-        const icons2 = this.add.sprite(centerX - 240, centerY +60, 'upgradeIcons', 1).setInteractive().setScale(.3);
-        const icons3 = this.add.sprite(centerX + 100, centerY +60, 'upgradeIcons', 2).setInteractive().setScale(.3);
-        const icons4 = this.add.sprite(centerX + 100, centerY - 100, 'upgradeIcons', 3).setInteractive().setScale(.3);
+        const lifeIcon = this.add.sprite(centerX - 230, centerY - 85, 'upgradeIcons', 6);
+        const soldiersIcon = this.add.sprite(centerX - 230, centerY + 75, 'upgradeIcons', 18);
+        const refuelIcon = this.add.sprite(centerX + 100, centerY + 70, 'upgradeIcons', 16);
+        const soldiersLifeIcon = this.add.sprite(centerX + 100, centerY - 90, 'upgradeIcons', 0);
 
         this.add.image(centerX, centerY, 'border');
 
@@ -25,6 +25,11 @@ export default class UpgradeScene extends Phaser.Scene {
         this.add.text(centerX + 130, centerY +60, 'Refuel', { fontFamily: 'custom', fontSize: '30px' });
         this.add.text(centerX + 130, centerY - 100, '+ Soldier Life', { fontFamily: 'custom', fontSize: '30px' });
         
+        // Set all sprites as interactive
+        lifeIcon.setInteractive().setScale(1.2);
+        soldiersIcon.setInteractive().setScale(1.2);
+        refuelIcon.setInteractive().setScale(1.2);
+        soldiersLifeIcon.setInteractive().setScale(1.2);
     }
 
     handleKeyDown(event) {

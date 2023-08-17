@@ -23,6 +23,7 @@ export default class LoadingScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.spritesheet('border', 'assets/ui/border.png', { frameWidth: 660, frameHeight: 458 });
         this.load.spritesheet('progress_bar', 'assets/ui/progress_bar.png', { frameWidth: 32, frameHeight: 1000 });
         this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
@@ -37,8 +38,7 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
         this.load.audio('attackHuman', 'assets/sfx/attackHuman.mp3');
         this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 192, frameHeight: 96 });
-        this.load.spritesheet('upgradeIcons', 'assets/ui/upgrades.png', { frameWidth: 160, frameHeight: 160 });
-        this.load.spritesheet('border', 'assets/ui/border.png', { frameWidth: 660, frameHeight: 458 });
+        this.load.spritesheet('upgradeIcons', 'assets/ui/upgrades_sheet.png', { frameWidth: 36, frameHeight: 36 });
     }
 
     update() {

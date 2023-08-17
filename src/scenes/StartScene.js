@@ -4,6 +4,8 @@ export default class StartScene extends Phaser.Scene {
     }
 
     create() {
+        this.add.image(this.cameras.main.width /2, this.cameras.main.height /2, 'border');
+
         this.titleScreenSound = this.sound.add('titleScreenSound')
         this.titleScreenSound.setVolume(.6);
         this.titleScreenSound.play();

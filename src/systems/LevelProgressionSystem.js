@@ -30,21 +30,21 @@ export default class LevelProgressionSystem {
                     this.batDeployTimer.start();
                 }
 
+                
+                // if (this.elapsedTime === 5) {
+                //     this.monsterDeployTimer.stop();
+                //     this.scorpionDeployTimer.stop();
+                //     this.wormDeployTimer.stop();
+                //     this.batDeployTimer.stop();
+                //     this.skeletonDeployTimer.stop();
+                //     this.monsterSwarm.stop();
+                //     this.soldierDeployTimer.stop();
+                //     this.acherDeployTimer.stop();
+                //     this.scene.stopScene();
+                //     this.scene.scene.stop('MainScene');
+                //     this.scene.scene.launch('Level2Scene');
 
-                if (this.elapsedTime === 5) {
-                    this.monsterDeployTimer.stop();
-                    this.scorpionDeployTimer.stop();
-                    this.wormDeployTimer.stop();
-                    this.batDeployTimer.stop();
-                    this.skeletonDeployTimer.stop();
-                    this.monsterSwarm.stop();
-                    this.soldierDeployTimer.stop();
-                    this.acherDeployTimer.stop();
-                    this.scene.stopScene();
-                    this.scene.scene.stop('MainScene');
-                    this.scene.scene.launch('Level2Scene');
-
-                }
+                // }
             },
             callbackScope: this,
             loop: true

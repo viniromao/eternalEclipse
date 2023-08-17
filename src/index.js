@@ -26,7 +26,6 @@ class MainScene extends Phaser.Scene {
 
     init() {
         this.initData();
-
     }
 
     create() {
@@ -40,7 +39,7 @@ class MainScene extends Phaser.Scene {
         this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
         this.entityDeployer.deployFireplace()
 
-
+        this.add.image(this.cameras.main.width /2, this.cameras.main.height /2, 'border');
     }
 
     togglePause() {
@@ -218,7 +217,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, GameOverScene],
+    }, scene: [LoadingScene, StartScene, MainScene, Level2Scene, UpgradeScene, GameOverScene],
     backgroundColor: '#000'
 };
 
