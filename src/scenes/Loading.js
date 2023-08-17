@@ -25,10 +25,10 @@ export default class LoadingScene extends Phaser.Scene {
     preload() {
         this.load.spritesheet('border', 'assets/ui/border.png', { frameWidth: 660, frameHeight: 458 });
         this.load.spritesheet('progress_bar', 'assets/ui/progress_bar.png', { frameWidth: 32, frameHeight: 1000 });
-        this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('monster_sprites', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 36, frameHeight: 36 });
+        this.load.spritesheet('background', 'assets/sprites/backgroundSpriteSheet.png', { frameWidth: 36, frameHeight: 36 });
         this.load.spritesheet('bigMonster', 'assets/sprites/monstersSpriteSheet.png', { frameWidth: 32, frameHeight: 64 });
-        this.load.spritesheet('goodGuys', 'assets/sprites/goodGuysSprites.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('goodGuys', 'assets/sprites/goodGuysSprites.png', { frameWidth: 36, frameHeight: 36 });
         this.load.audio('startSound', 'assets/music/startScreen.mp3');
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
         this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
