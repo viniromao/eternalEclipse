@@ -1,4 +1,3 @@
-
 import Line from "./components/Line.js"
 import ArcherRange from "./components/ArcherRange.js"
 
@@ -17,11 +16,14 @@ import GrassBackground from "./components/Background.js"
 import LoadingScene from "./scenes/Loading.js"
 import UpgradeScene from "./scenes/UpgradeScene.js"
 import Level2Scene from "./scenes/Level2Scene.js"
+import ProgressBarManager from './systems/ProgressBarManager.js';
+import GameDataComponent from './components/GameDataComponent.js';
 
 
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
+        this.gameData = new GameDataComponent();
     }
 
     init() {
@@ -29,10 +31,11 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
+        this.progressBarManager = new ProgressBarManager(this, 80, 10, 490, 20, 30);
+
         this.initSounds();
         this.initInputs();
         this.loadProgressBar();
-
 
         this.createSystems();
         this.createPlayer();

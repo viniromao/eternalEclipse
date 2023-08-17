@@ -2,8 +2,8 @@ import EntityStats from "../components/EntityStats.js"
 
 export default class GameDataComponent {
     constructor() {
-        this.meleeSoldierStats = new EntityStats(10, 1, null);
-        this.archerStats = new EntityStats(3, 2, null);
+        this.meleeSoldierStats = new EntityStats(10, 1, 0, 1);
+        this.archerStats = new EntityStats(3, 2, 0, 1);
 
         this.skeletonStats = new EntityStats(1, 1, 1, 1);
         this.ghostStats = new EntityStats(8, 2, 2, 2);
