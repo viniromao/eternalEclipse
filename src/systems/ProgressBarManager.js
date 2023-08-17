@@ -19,6 +19,8 @@ class ProgressBarManager {
     }
 
     gainXP(amount) {
+        console.log("aumentou")
+
         this.currentXP += amount;
         if (this.currentXP > this.maxXP) {
             this.currentXP = this.maxXP;

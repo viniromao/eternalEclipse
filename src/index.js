@@ -24,6 +24,7 @@ class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
         this.gameData = new GameDataComponent();
+        this.progressBarManager = null; // Add this line
     }
 
     init() {
@@ -157,6 +158,9 @@ class MainScene extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
             this.togglePause();
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE))) {
+            this.progressBarManager.gainXP(10); // Increase XP by 1
         }
     }
 

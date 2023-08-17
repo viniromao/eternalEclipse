@@ -14,13 +14,19 @@ export default class DeathSystem {
                 entity.markedForDestruction = false;
                 entity.dying = true;
                 this.playDeathSounds(entity);
+                console.log("Monster died:")
 
                 // Update XP bar when a monster dies
-                if (!(entity instanceof Soldier) && entity.stats && entity.stats.monsterType) {
-                    const monsterType = entity.monsterType; // Assuming your entity structure has a monsterType property
-                    const xpFromMonster = this.scene.gameData[monsterType].xp;
+                if (!(entity instanceof Soldier)) {
+                    const monsterType = entity.monsterType;
+                    console.log("Monster Type:", monsterType);
+                    
+                    const xpFromMonster = this.scene.gameData[monsterType]?.xp;
+                    console.log("XP from Monster:", xpFromMonster);
+                    
                     this.scene.progressBarManager.gainXP(xpFromMonster);
                 }
+                
 
                 this.animateDeath(entity, () => {
                     entity.destroy();
