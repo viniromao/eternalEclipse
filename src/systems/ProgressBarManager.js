@@ -1,4 +1,3 @@
-// ProgressBarManager.js
 class ProgressBarManager {
     constructor(scene, x, y, width, height, maxXP) {
         this.scene = scene;
@@ -24,6 +23,10 @@ class ProgressBarManager {
         this.currentXP += amount;
         if (this.currentXP > this.maxXP) {
             this.currentXP = this.maxXP;
+        }
+        if (this.currentXP == this.maxXP){
+            this.scene.upgrade();
+            this.currentXP = 0
         }
     
         // Update the width of the fill rectangle based on the gained XP

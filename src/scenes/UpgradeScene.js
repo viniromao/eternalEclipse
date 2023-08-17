@@ -1,3 +1,5 @@
+import UpgradeSystem from "../systems/UpgradeSystem.js";
+
 export default class UpgradeScene extends Phaser.Scene {
     constructor() {
         super({ key: 'UpgradeScene' });
@@ -6,6 +8,9 @@ export default class UpgradeScene extends Phaser.Scene {
     create() {
         const centerX = this.cameras.main.width / 2;
         const centerY = this.cameras.main.height / 2;
+        
+        // Add a key event listener to apply upgrades
+        this.input.keyboard.on('keydown', this.handleKeyDown, this);
 
         // Set the background to black
         this.background = this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000).setOrigin(0, 0);
@@ -42,6 +47,16 @@ export default class UpgradeScene extends Phaser.Scene {
             // Exit the UpgradeScene and return to MainScene
             this.scene.stop('UpgradeScene');
             this.scene.resume('MainScene');
+        }
+        
+        if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
+            const { gameData } = this.scene.settings.data; // Access gameData from scene settings
+                const upgradeSystem = new UpgradeSystem(gameData);
+                upgradeSystem.applyUpgrades();
+                // Stop the game first (not pause) and then resume the MainScene
+                this.scene.stop('UpgradeScene');
+                const mainScene = this.scene.get('MainScene');
+                this.scene.resume('MainScene');
         }
     }
 }

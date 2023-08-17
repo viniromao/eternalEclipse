@@ -27,12 +27,17 @@ class MainScene extends Phaser.Scene {
         this.progressBarManager = null; // Add this line
     }
 
+    upgrade() {
+        this.scene.launch('UpgradeScene', { gameData: this.gameData }); // Pass gameData to UpgradeScene
+        this.togglePause(); // Pause the game
+    }
+
     init() {
         this.initData();
     }
 
     create() {
-        this.progressBarManager = new ProgressBarManager(this, 80, 10, 490, 20, 30);
+        this.progressBarManager = new ProgressBarManager(this, 80, 10, 490, 20, 53)
 
         this.initSounds();
         this.initInputs();
@@ -49,11 +54,6 @@ class MainScene extends Phaser.Scene {
     togglePause() {
         this.isPaused = !this.isPaused;
         this.physics.world.timeScale = this.isPaused ? 0 : 1;
-    }
-
-    upgrade() {
-        this.scene.launch('UpgradeScene');
-        this.togglePause(); // Pause the game
     }
     
     createPlayer() {
