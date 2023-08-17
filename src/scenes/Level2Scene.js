@@ -11,7 +11,6 @@ import DeathSystem from "../systems/DeathSystem.js"
 import FogOfWar from "../systems/FogOfWar.js"
 import LevelProgressionSystem from "../systems/LevelProgressionSystem.js"
 
-import GameOverScene from "../scenes/GameOverScene.js"
 import GrassBackground from "../components/Background.js"
 
 
@@ -22,7 +21,6 @@ export default class Level2Scene extends Phaser.Scene {
 
     init() {
         this.initData();
-
     }
 
     create() {
@@ -32,9 +30,7 @@ export default class Level2Scene extends Phaser.Scene {
         this.createSystems();
         this.createPlayer();
         this.line = new Line(this, this.player.position.x, this.player.position.y, 150);
-        this.entityDeployer.deployFireplace()
-
-
+        this.entityDeployer.deployFireplace();
     }
 
     togglePause() {
@@ -99,8 +95,10 @@ export default class Level2Scene extends Phaser.Scene {
 
     createSystems() {
         this.targetSystem = []
-        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
-        this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
+        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 190)
+
+        console.log(this.fogOfWar)
+        this.soldierManagementSystem = new SoldierManagementSystem(this, 100)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);
         this.animationSystem = new AnimationSystem(this);

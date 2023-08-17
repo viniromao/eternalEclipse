@@ -38,7 +38,6 @@ export default class LevelProgressionSystem {
                     this.batDeployTimer.stop();
                     this.skeletonDeployTimer.stop();
                     this.monsterSwarm.stop();
-                    this.soldierDeployTimer.stop();
                     this.acherDeployTimer.stop();
                     this.scene.stopScene();
                     this.scene.scene.stop('MainScene');
@@ -97,9 +96,6 @@ export default class LevelProgressionSystem {
         this.monsterSwarm = new TimerManager(this.scene, this, 10000, this.createSwarm);
         this.monsterSwarm.start();
 
-        this.soldierDeployTimer = new TimerManager(this.scene, this, 300, this.createSoldier);
-        this.soldierDeployTimer.start();
-
         this.acherDeployTimer = new TimerManager(this.scene, this, 300, this.createSoldier);
         this.acherDeployTimer.start();
 
@@ -151,18 +147,12 @@ export default class LevelProgressionSystem {
         if (this.scene.isPaused) {
             return;
         }
-        if (this.scene.archersList.length < 4) {
-            this.scene.entityDeployer.deployArcher()
-        } else {
-            this.soldierDeployTimer.stop()
-        }
 
-        if (this.scene.soldierList.length < 12) {
+        while (this.scene.archersList.length < 4)
+            this.scene.entityDeployer.deployArcher()
+
+        while (this.scene.soldierList.length < 12)
             this.scene.entityDeployer.deploySoldier()
-        }
-        else {
-            this.acherDeployTimer.stop()
-        }
     }
 
 

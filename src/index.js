@@ -108,7 +108,7 @@ class MainScene extends Phaser.Scene {
 
     createSystems() {
         this.targetSystem = []
-        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
+        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 200)
         this.soldierManagementSystem = new SoldierManagementSystem(this, 150)
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);

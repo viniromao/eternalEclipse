@@ -114,7 +114,7 @@ export default class EntityDeployer {
 
     deployTheKingLvl2() {
         const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
-        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height/2);
+        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height/2 + 50);
         const velocity = new VelocityComponent(0, 0);
         const health = new HealthSystem(this.scene, position, 5)
         const finalPosition = position;
