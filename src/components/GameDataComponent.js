@@ -14,13 +14,13 @@ export default class GameDataComponent {
         this.monsterHandStats = new EntityStats(10, 3, 8, 3);
         this.wormStats = new EntityStats(3, 1, 9, 1);
         this.scorpionStats = new EntityStats(2, 1, 10, 1);
-        this.piggyStats = new EntityStats(6, 1, 10, 1);
-        this.piggyChariotStats = new EntityStats(10, 2, 10, 3);
-        this.dinosaurStats = new EntityStats(12, 3, 10, 3);
-        this.mageDinosaurStats = new EntityStats(16, 3, 10, 3);
-        this.beeStats = new EntityStats(20, 4, 10, 5);
-        this.ratDarkLordStats = new EntityStats(26, 3, 10, 6);
-        this.slimeStats = new EntityStats(40, 5, 10, 10);
+        this.piggyStats = new EntityStats(6, 1, 11, 1);
+        this.piggyChariotStats = new EntityStats(10, 2, 12, 3);
+        this.dinosaurStats = new EntityStats(12, 3, 13, 3);
+        this.mageDinosaurStats = new EntityStats(16, 3, 14, 3);
+        this.beeStats = new EntityStats(20, 4, 15, 5);
+        this.ratDarkLordStats = new EntityStats(26, 3, 16, 6);
+        this.slimeStats = new EntityStats(40, 5, 17, 10);
     }
 
 }

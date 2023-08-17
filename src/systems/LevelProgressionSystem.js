@@ -10,6 +10,10 @@ export default class LevelProgressionSystem {
 
     level1() {
         this.elapsedTime = 0;
+        this.monsterDeployTimer.start();
+        this.monsterSwarm.start();
+        this.skeletonDeployTimer.start();
+        this.acherDeployTimer.start();
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -51,6 +55,9 @@ export default class LevelProgressionSystem {
     }
 
     level2() {
+        this.piggyTimer.start();
+        this.acherDeployTimer.start();
+
         this.elapsedTime = 0;
 
         this.scene.time.addEvent({
@@ -59,17 +66,13 @@ export default class LevelProgressionSystem {
                 this.elapsedTime += 1;
 
                 if (this.elapsedTime === 30) {
-                    this.monsterSwarm.stop();
-                    this.wormDeployTimer.start()
                 }
 
                 if (this.elapsedTime === 60) {
-                    this.scorpionDeployTimer.start()
 
                 }
 
                 if (this.elapsedTime === 90) {
-                    this.batDeployTimer.start();
                 }
 
             },
@@ -82,7 +85,6 @@ export default class LevelProgressionSystem {
     initTimers() {
 
         this.monsterDeployTimer = new TimerManager(this.scene, this, 1000, this.createMonster);
-        this.monsterDeployTimer.start();
 
         this.scorpionDeployTimer = new TimerManager(this.scene, this, 1000, this.createScorpion);
 
@@ -90,14 +92,29 @@ export default class LevelProgressionSystem {
 
         this.batDeployTimer = new TimerManager(this.scene, this, 500, this.createBat);
 
+
+
+
+        this.piggyTimer = new TimerManager(this.scene, this, 1000, this.createPiggy);
+
+        this.piggyChariotTimer = new TimerManager(this.scene, this, 3000, this.createPiggyChariot);
+
+        this.dinossaurTimer = new TimerManager(this.scene, this, 500, this.createDinossaur);
+
+        this.mageDinossaurTimer = new TimerManager(this.scene, this, 1000, this.createMageDinossaur);
+
+        this.beeTimer = new TimerManager(this.scene, this, 3000, this.createBee);
+
+        this.darkLordRatTimer = new TimerManager(this.scene, this, 500, this.createDarkLordRat);
+
+        this.slimeTimer = new TimerManager(this.scene, this, 1000, this.createSlime);
+
+
         this.skeletonDeployTimer = new TimerManager(this.scene, this, 3000, this.createMonster);
-        this.skeletonDeployTimer.start();
 
         this.monsterSwarm = new TimerManager(this.scene, this, 10000, this.createSwarm);
-        this.monsterSwarm.start();
-
+      
         this.acherDeployTimer = new TimerManager(this.scene, this, 300, this.createSoldier);
-        this.acherDeployTimer.start();
 
         // this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
         // this.archerFireTimer.start();
@@ -115,6 +132,55 @@ export default class LevelProgressionSystem {
             return;
         }
         this.scene.entityDeployer.deployMonster(this.gameData.wormStats)
+    }
+
+    createPiggy() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.piggyStats)
+    } 
+    
+    createPiggyChariot() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.piggyChariotStats)
+    }
+    
+    createDinossaur() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.dinosaurStats)
+    } 
+    
+    createMageDinossaur() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.mageDinosaurStats)
+    } 
+    
+    createBee() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.beeStats)
+    } 
+    
+    createDarkLordRat() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.ratDarkLordStats)
+    }
+
+    createSlime() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.entityDeployer.deployMonster(this.gameData.slimeStats)
     }
 
     createBat() {
