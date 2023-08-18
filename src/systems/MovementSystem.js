@@ -1,6 +1,9 @@
+import Monster from "../components/Monster.js";
+
 export default class MovementSystem {
     constructor(speed) {
         this.speed = speed;
+        this.arrowSpeed = speed * 10;
         this.stopThreshold = 3;
     }
 
@@ -10,7 +13,11 @@ export default class MovementSystem {
             entity.sprite.x = entity.position.x;
             entity.sprite.y = entity.position.y;
 
-            if ((Math.abs(entity.position.x - entity.finalPosition.x) < this.stopThreshold) && (Math.abs(entity.position.y == entity.finalPosition.y) < this.stopThreshold)) {
+
+            if ((Math.abs(entity.position.x - entity.finalPosition.x) < this.stopThreshold) && (Math.abs(entity.position.y - entity.finalPosition.y) < this.stopThreshold)) {
+                if (entity instanceof Monster)
+                    return
+
                 entity.position.x = entity.finalPosition.x;
                 entity.position.y = entity.finalPosition.y;
                 this.updateHealthPosition(entity)
@@ -43,6 +50,16 @@ export default class MovementSystem {
 
             this.updateHealthPosition(entity)
         }
+    }
+
+    updateArrow(arrow) {
+        arrow.velocity.dx = Math.cos(arrow.angle) * this.arrowSpeed;
+        arrow.velocity.dy = Math.sin(arrow.angle) * this.arrowSpeed;
+
+        arrow.sprite.x = arrow.position.x;
+        arrow.sprite.y = arrow.position.y;
+        arrow.position.x += arrow.velocity.dx;
+        arrow.position.y += arrow.velocity.dy;
     }
 
     updateHealthPosition(entity) {

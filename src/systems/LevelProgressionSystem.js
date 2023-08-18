@@ -14,6 +14,7 @@ export default class LevelProgressionSystem {
         this.monsterSwarm.start();
         this.skeletonDeployTimer.start();
         this.acherDeployTimer.start();
+        this.archersShootTimer.start();
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -34,21 +35,22 @@ export default class LevelProgressionSystem {
                     this.batDeployTimer.start();
                 }
 
-                
-                // if (this.elapsedTime === 5) {
-                //     this.monsterDeployTimer.stop();
-                //     this.scorpionDeployTimer.stop();
-                //     this.wormDeployTimer.stop();
-                //     this.batDeployTimer.stop();
-                //     this.skeletonDeployTimer.stop();
-                //     this.monsterSwarm.stop();
-                //     this.soldierDeployTimer.stop();
-                //     this.acherDeployTimer.stop();
-                //     this.scene.stopScene();
-                //     this.scene.scene.stop('MainScene');
-                //     this.scene.scene.launch('Level2Scene');
 
-                // }
+                if (this.elapsedTime === 120) {
+                    this.monsterDeployTimer.stop();
+                    this.scorpionDeployTimer.stop();
+                    this.wormDeployTimer.stop();
+                    this.batDeployTimer.stop();
+                    this.skeletonDeployTimer.stop();
+                    this.monsterSwarm.stop();
+                    // this.soldierDeployTimer.stop();
+                    this.acherDeployTimer.stop();
+                    this.archersShootTimer.stop();
+                    this.scene.stopScene();
+                    this.scene.scene.stop('MainScene');
+                    this.scene.scene.launch('VictoryScene', { nextScene: 'Level2Scene' });
+
+                }
             },
             callbackScope: this,
             loop: true
@@ -103,9 +105,7 @@ export default class LevelProgressionSystem {
 
         this.batDeployTimer = new TimerManager(this.scene, this, 500, this.createBat);
 
-
-
-
+        this.archersShootTimer = new TimerManager(this.scene, this, 3000, this.shootArrows)
 
         this.piggyTimer = new TimerManager(this.scene, this, 1000, this.createPiggy);
 
@@ -123,7 +123,6 @@ export default class LevelProgressionSystem {
 
         this.slimeTimer = new TimerManager(this.scene, this, 1000, this.createSlime);
 
-
         this.skeletonDeployTimer = new TimerManager(this.scene, this, 3000, this.createMonster);
 
         this.monsterSwarm = new TimerManager(this.scene, this, 10000, this.createSwarm);
@@ -132,9 +131,14 @@ export default class LevelProgressionSystem {
 
         this.verifyEndLevelTimer = new TimerManager(this.scene, this, 1000, this.verifyEndLevel);
 
+    }
 
-        // this.archerFireTimer = new TimerManager(this, 300, this.archerFire);
-        // this.archerFireTimer.start();
+    shootArrows() {
+        if (this.scene.isPaused) {
+            return;
+        }
+        this.scene.soldierManagementSystem.shootArchersArrows()
+        this.scene.soldierManagementSystem.castFireballs()
     }
 
     createScorpion() {
@@ -250,11 +254,17 @@ export default class LevelProgressionSystem {
             return;
         }
 
-        while (this.scene.archersList.length < 4)
+        while (this.scene.archersList.length < 10)
             this.scene.entityDeployer.deployArcher()
 
-        while (this.scene.soldierList.length < 12)
+        while (this.scene.soldierList.length < 0)
             this.scene.entityDeployer.deploySoldier()
+
+        while (this.scene.mages.length < 4)
+            this.scene.entityDeployer.deployMage()
+
+        this.acherDeployTimer.stop();
+
     }
 
 }
