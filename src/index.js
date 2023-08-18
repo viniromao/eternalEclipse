@@ -21,7 +21,6 @@ import GameDataComponent from './components/GameDataComponent.js';
 import VictoryScene from "./scenes/VictoryScene.js"
 import LoreScene from "./scenes/LoreScene.js"
 
-
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
