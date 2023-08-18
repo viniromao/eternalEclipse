@@ -30,7 +30,7 @@ class MainScene extends Phaser.Scene {
     }
 
     upgrade() {
-        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar,scene: 'MainScene' }); 
+        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar,scene: this }); 
         this.togglePause(); // Pause the game
     }
 

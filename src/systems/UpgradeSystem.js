@@ -1,7 +1,7 @@
 export default class UpgradeSystem {
     constructor(gameData, fogOfWar, entityDeployer) {
         this.gameData = gameData;
-        fogOfWar = fogOfWar;
+        this.fogOfWar = fogOfWar;
         this.entityDeployer = entityDeployer;
     }
 
@@ -49,11 +49,8 @@ export default class UpgradeSystem {
     }
 
     BuySoldiers() {
-
-        const entityDeployer = new EntityDeployer(this.scene);
-
         for (let i = 0; i < 5; i++) {
-            entityDeployer.deploySoldier();
+            this.entityDeployer.deploySoldier();
         }
 
         console.log("Buying soldiers")

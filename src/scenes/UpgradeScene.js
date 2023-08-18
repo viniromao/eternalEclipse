@@ -33,30 +33,31 @@ export default class UpgradeScene extends Phaser.Scene {
 
         const { gameData } = this.scene.settings.data;
         const fogOfWar = this.currentScene.FogOfWar;
-        const upgradeSystem = new UpgradeSystem(gameData, fogOfWar,this.currentScene.entityDeployer);
+        const upgradeSystem = new UpgradeSystem(gameData, this.currentScene.fogOfWar, this.currentScene.entityDeployer);
 
         lifeIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
             upgradeSystem.SoldierHealthUpgrade();
-            this.scene.stop('UpgradeScene');
-            this.scene.resume(this.currentScene);
+            this.scene.stop();
+            this.currentScene.togglePause();
         });
     
         soldiersIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
             upgradeSystem.BuySoldiers();
-            this.scene.stop('UpgradeScene');
-            this.scene.resume(this.currentScene);
+            this.scene.stop();
+            this.currentScene.togglePause();
+
         });
     
         refuelIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
             upgradeSystem.IncreaseLightRadius();
-            this.scene.stop('UpgradeScene');
-            this.scene.resume(this.currentScene);
+            this.scene.stop();
+            this.currentScene.togglePause();
         });
     
         soldiersLifeIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
             upgradeSystem.SoldierDamageUpgrade();
-            this.scene.stop('UpgradeScene');
-            this.scene.resume(this.currentScene);
+            this.scene.stop();
+            this.currentScene.togglePause();
         });
     }
 
