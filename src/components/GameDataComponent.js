@@ -5,7 +5,7 @@ export default class GameDataComponent {
         this.meleeSoldierStats = new EntityStats(10, 1, 0, 1);
         this.archerStats = new EntityStats(3, 2, 0, 1);
 
-        this.skeletonStats = new EntityStats(1, 1, 1, 20);
+        this.skeletonStats = new EntityStats(1, 1, 1, 1);
         this.ghostStats = new EntityStats(8, 2, 2, 2);
         this.demonStats = new EntityStats(5, 1, 3, 3);
         this.dragonStats = new EntityStats(25, 5, 5, 5);

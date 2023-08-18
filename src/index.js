@@ -107,7 +107,22 @@ class MainScene extends Phaser.Scene {
         this.archersList.forEach(archer => {
             this.movementSystem.update(archer, this);
         });
+        this.mages.forEach(mage => {
+            this.movementSystem.update(mage, this);
+        });
         this.movementSystem.update(this.player, this);
+
+        this.arrows.forEach(arrow => {
+            this.movementSystem.updateArrow(arrow)
+            arrow.outOfBoundsOrDealtDamage();
+        })
+
+        this.fireBalls.forEach(fireBall => {
+            this.movementSystem.updateArrow(fireBall)
+            fireBall.outOfBounds()
+        })
+
+
 
         if (this.counter % 5 == 0) {
             this.deathSystem.update(this.monstersList);
@@ -171,9 +186,12 @@ class MainScene extends Phaser.Scene {
         this.grassBackground = new GrassBackground(this);
         this.isPaused = false;
         this.archerRange = new ArcherRange(this, 50);
+        this.arrows = []
+        this.fireBalls = []
         this.soldierList = []
         this.monstersList = []
         this.archersList = []
+        this.mages = []
         this.counter = 0
     }
 
