@@ -7,6 +7,7 @@ export default class UpgradeScene extends Phaser.Scene {
 
     init(data) {
         this.currentScene = data.scene
+        this.fogOfWar = data.fogOfWar;
     }
 
     create() {
@@ -19,20 +20,44 @@ export default class UpgradeScene extends Phaser.Scene {
     
         const lifeIcon = this.add.sprite(centerX - 230, centerY - 85, 'upgradeIcons', 6);
         const soldiersIcon = this.add.sprite(centerX - 230, centerY + 75, 'upgradeIcons', 18);
-        const refuelIcon = this.add.sprite(centerX + 100, centerY + 70, 'upgradeIcons', 16);
-        const soldiersLifeIcon = this.add.sprite(centerX + 100, centerY - 90, 'upgradeIcons', 0);
+        const refuelIcon = this.add.sprite(centerX + 80, centerY + 70, 'upgradeIcons', 16);
+        const soldiersLifeIcon = this.add.sprite(centerX + 80, centerY - 90, 'upgradeIcons', 0);
 
         this.add.image(centerX, centerY, 'border');
 
         this.add.text(centerX - 200, centerY - 100, '+ Life', { fontFamily: 'custom', fontSize: '30px' });
         this.add.text(centerX - 200, centerY +60, '+ 5 Soldiers', { fontFamily: 'custom', fontSize: '30px' });
-        this.add.text(centerX + 130, centerY +60, 'Refuel', { fontFamily: 'custom', fontSize: '30px' });
-        this.add.text(centerX + 130, centerY - 100, '+ Soldier Life', { fontFamily: 'custom', fontSize: '30px' });
+        this.add.text(centerX + 110, centerY +60, 'Refuel', { fontFamily: 'custom', fontSize: '30px' });
+        this.add.text(centerX + 110, centerY - 100, '+ Soldier Damage', { fontFamily: 'custom', fontSize: '30px' });
         
-        lifeIcon.setInteractive().setScale(1.2);
-        soldiersIcon.setInteractive().setScale(1.2);
-        refuelIcon.setInteractive().setScale(1.2);
-        soldiersLifeIcon.setInteractive().setScale(1.2);
+
+        const { gameData } = this.scene.settings.data;
+        const fogOfWar = this.currentScene.FogOfWar;
+        const upgradeSystem = new UpgradeSystem(gameData, fogOfWar,this.currentScene.entityDeployer);
+
+        lifeIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
+            upgradeSystem.SoldierHealthUpgrade();
+            this.scene.stop('UpgradeScene');
+            this.scene.resume(this.currentScene);
+        });
+    
+        soldiersIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
+            upgradeSystem.BuySoldiers();
+            this.scene.stop('UpgradeScene');
+            this.scene.resume(this.currentScene);
+        });
+    
+        refuelIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
+            upgradeSystem.IncreaseLightRadius();
+            this.scene.stop('UpgradeScene');
+            this.scene.resume(this.currentScene);
+        });
+    
+        soldiersLifeIcon.setInteractive().setScale(1.2).on('pointerdown', () => {
+            upgradeSystem.SoldierDamageUpgrade();
+            this.scene.stop('UpgradeScene');
+            this.scene.resume(this.currentScene);
+        });
     }
 
     handleKeyDown(event) {
@@ -48,13 +73,14 @@ export default class UpgradeScene extends Phaser.Scene {
         }
         
         if (event.keyCode === Phaser.Input.Keyboard.KeyCodes.ENTER) {
-
-            const { gameData } = this.scene.settings.data; 
-                const upgradeSystem = new UpgradeSystem(gameData);
-                upgradeSystem.applyUpgrades();
-                this.scene.stop('UpgradeScene');
-                const mainScene = this.scene.get(this.currentScene);
-                this.scene.resume(this.currentScene);
+            const { gameData } = this.scene.settings.data;
+                    
+            const upgradeSystem = new UpgradeSystem(gameData, this.currentScene, this.currentScene.entityDeployer);
+            upgradeSystem.SoldierHealthUpgrade();
+                    
+            this.scene.stop('UpgradeScene');
+            this.scene.resume(this.currentScene);
         }
+        
     }
 }

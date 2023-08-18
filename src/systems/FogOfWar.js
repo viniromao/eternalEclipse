@@ -32,7 +32,7 @@ export default class FogOfWar {
                 const x = entity.position.x;
                 const y = entity.position.y;
                 this.graphics.fillStyle(0xffffff);
-                this.graphics.fillCircle(x, y, this.sightRadius);
+                this.graphics.fillCircle(x, y, this.sightRadius); // Use this.sightRadius instead of a fixed value
             }
         }
     }

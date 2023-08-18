@@ -23,6 +23,11 @@ export default class Level2Scene extends Phaser.Scene {
         this.initData();
     }
 
+    upgrade() {
+        this.scene.launch('UpgradeScene', { gameData: this.gameData, scene: 'Level2Scene' }); 
+        this.togglePause();
+    }
+
     create() {
         this.initSounds();
         this.initInputs();
