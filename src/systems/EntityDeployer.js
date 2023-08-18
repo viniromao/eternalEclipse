@@ -109,7 +109,7 @@ export default class EntityDeployer {
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent('mage', { start: 36, end: 39 });
         const attackAnimation = new SpriteAnimationComponent('mage-attack', { start: 40, end: 43 });
-        const deathAnimation = new SpriteAnimationComponent('archerDeath', { start: 20, end: 23 });
+        const deathAnimation = new SpriteAnimationComponent('mage-death', { start: 20, end: 23 });
         const health = new HealthSystem(this.scene, position, 3)
         const entity = new Mage(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1)
 

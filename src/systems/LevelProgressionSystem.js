@@ -43,13 +43,10 @@ export default class LevelProgressionSystem {
                     this.batDeployTimer.stop();
                     this.skeletonDeployTimer.stop();
                     this.monsterSwarm.stop();
-                    // this.soldierDeployTimer.stop();
                     this.acherDeployTimer.stop();
                     this.archersShootTimer.stop();
                     this.scene.stopScene();
-                    this.scene.scene.stop('MainScene');
-                    this.scene.scene.launch('VictoryScene', { nextScene: 'Level2Scene' });
-
+                    this.verifyEndLevelTimer.start();
                 }
             },
             callbackScope: this,
@@ -257,7 +254,7 @@ export default class LevelProgressionSystem {
         while (this.scene.archersList.length < 10)
             this.scene.entityDeployer.deployArcher()
 
-        while (this.scene.soldierList.length < 0)
+        while (this.scene.soldierList.length < 10)
             this.scene.entityDeployer.deploySoldier()
 
         while (this.scene.mages.length < 4)

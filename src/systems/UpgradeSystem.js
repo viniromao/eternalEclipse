@@ -34,13 +34,7 @@ export default class UpgradeSystem {
     }
 
     IncreaseLightRadius() {
-        console.log("old light radius:", this.fogOfWar.sightRadius);
-    
-        this.fogOfWar.sightRadius *= 2;
-    
-        console.log("increased");
-    
-        console.log("new light radius:", this.fogOfWar.sightRadius);
+        this.fogOfWar.sightRadius = Math.min(this.fogOfWar.sightRadius + 50, 200)
     }
     
 
