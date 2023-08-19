@@ -1,53 +1,83 @@
 export default class UpgradeSystem {
-    constructor(gameData, fogOfWar, entityDeployer) {
-        this.gameData = gameData;
-        this.fogOfWar = fogOfWar;
-        this.entityDeployer = entityDeployer;
+    constructor(currentScene) {
+        this.currentScene = currentScene;
+    }
+    
+    MageDamageUpgrade() {
+        const upgradeModifier= 1; 
+
+        this.currentScene.gameData.mageStats.damage += upgradeModifier;
+
+        console.log("MageDamageUpgrade")
     }
 
-    applyUpgrades() {
-        const upgradeModifier = 2; 
+    ArcherDamageUpgrade() {
+        const upgradeModifier= 2;
 
-        this.gameData.meleeSoldierStats.health *= upgradeModifier;
-        this.gameData.meleeSoldierStats.damage += upgradeModifier;
+        this.currentScene.gameData.archerStats.damage += upgradeModifier;
+        console.log("ArcherDamageUpgrade")
     }
 
     SoldierDamageUpgrade() {
-        const upgradeModifier= 2; 
+        const upgradeModifier= 2;
 
-        console.log("dam before:" + this.gameData.meleeSoldierStats.damage)
+        this.currentScene.gameData.meleeSoldierStats.damage += upgradeModifier;
+        console.log("SoldierDamageUpgrade")
 
-        this.gameData.meleeSoldierStats.damage += upgradeModifier;
-
-        console.log("dam after:" + this.gameData.meleeSoldierStats.damage)
     }
     
     SoldierHealthUpgrade(){
-        const upgradeModifier= 2; 
+        const upgradeModifier= 2;
 
-        console.log("health before:" + this.gameData.meleeSoldierStats.health)
-
-        this.gameData.meleeSoldierStats.health *= upgradeModifier;
-    
-        console.log("health after:" + this.gameData.meleeSoldierStats.health)
+        this.currentScene.gameData.meleeSoldierStats.health *= upgradeModifier;
+        console.log("SoldierHealthUpgrade")
 
     }
 
     IncreaseLightRadius() {
-        this.fogOfWar.sightRadius = Math.min(this.fogOfWar.sightRadius + 50, 200)
+        this.currentScene.fogOfWar.sightRadius = Math.min(this.currentScene.fogOfWar.sightRadius + 150, 250)
+        console.log("IncreaseLightRadius")
+
+    }
+
+    DecreaseSoldiersRadius(){
+        console.log("before: " + this.currentScene.soldierManagementSystem.radius)
+        this.currentScene.soldierManagementSystem.radius = Math.max(this.currentScene.soldierManagementSystem.radius -20 , 100);
+        console.log("after: " + this.currentScene.soldierManagementSystem.radius)
     }
     
-
-    LongerLightDuration(){
-        console.log("refueling")
-    }
-
     BuySoldiers() {
-        for (let i = 0; i < 5; i++) {
-            this.entityDeployer.deploySoldier();
+        const numberOfSoldiersOptions = [10, 15, 20];
+        const randomIndex = Math.floor(Math.random() * numberOfSoldiersOptions.length);
+        const numberOfSoldiers = numberOfSoldiersOptions[randomIndex];
+    
+        for (let i = 0; i < numberOfSoldiers; i++) {
+            this.currentScene.entityDeployer.deploySoldier(this.currentScene.gameData.meleeSoldierStats);
         }
-
-        console.log("Buying soldiers")
+        console.log("BuySoldiers")
 
     }   
+
+    BuyMages(){
+        for (let i = 0; i < 2; i++) {
+            this.currentScene.entityDeployer.deployMage(this.currentScene.gameData.mageStats);
+        }
+        console.log("BuyMages")
+
+    }
+
+    BuyArchers(){
+        for (let i = 0; i < 5; i++) {
+            this.currentScene.entityDeployer.deployArcher(this.currentScene.gameData.archerStats);
+        }
+        console.log("BuyArchers")
+
+    }
+
+    RestoreSoldiersHealth(){
+        this.currentScene.soldierList.forEach(soldier => {
+            soldier.health.setCurrentHealthToMax();
+        });
+        console.log("RestoreSoldiersHealth")
+    }
 }

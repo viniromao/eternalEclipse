@@ -29,7 +29,7 @@ class MainScene extends Phaser.Scene {
     }
 
     upgrade() {
-        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar,scene: this }); 
+        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar,scene: this},this.soldierManagementSystem); 
         this.togglePause(); // Pause the game
     }
 
@@ -38,7 +38,7 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
-        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 200)
+        this.fogOfWar = new FogOfWar(this, this.sys.game.config.width, this.sys.game.config.height, 250)
 
 
         this.progressBarManager = new ProgressBarManager(this, 80, 10, 490, 20, 53)
@@ -141,6 +141,7 @@ class MainScene extends Phaser.Scene {
         this.collisionSystem = new CollisionSystem(this, 30, 15)
         this.entityDeployer = new EntityDeployer(this);
         this.animationSystem = new AnimationSystem(this);
+        this.movementSystem = new MovementSystem(1);
         this.movementSystem = new MovementSystem(1);
         this.deathSystem = new DeathSystem(this);
         this.levelProgressionSystem = new LevelProgressionSystem(this);

@@ -53,7 +53,7 @@ export default class EntityDeployer {
         return entity;
     }
 
-    deploySoldier() {
+    deploySoldier(stats) {
         let randomCharacter = (Phaser.Math.Between(1, 2) * 2) - 2;
 
         const sprite = this.scene.add.sprite(0, 0, 'soldier');
@@ -63,8 +63,8 @@ export default class EntityDeployer {
         const spriteAnimation = new SpriteAnimationComponent('soldier', { start: 12, end: 15 });
         const deathAnimation = new SpriteAnimationComponent('soldierDeath', { start: 20, end: 23 });
         const attackAnimation = new SpriteAnimationComponent('soldierAttack', { start: 16, end: 19 });
-        const health = new HealthSystem(this.scene, position, 10)
-        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1)
+        const health = new HealthSystem(this.scene, position, stats.health ? stats.health : 10); 
+        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, stats.damage ? stats.damage : 1)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
 
@@ -77,7 +77,7 @@ export default class EntityDeployer {
         return entity;
     }
 
-    deployArcher() {
+    deployArcher(stats) {
 
         const sprite = this.scene.add.sprite(100, 100, 'archer');
         const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y);
@@ -86,8 +86,8 @@ export default class EntityDeployer {
         const spriteAnimation = new SpriteAnimationComponent('archer', { start: 28, end: 31 });
         const attackAnimation = new SpriteAnimationComponent('archer-attack', { start: 24, end: 27 });
         const deathAnimation = new SpriteAnimationComponent('archerDeath', { start: 20, end: 23 });
-        const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 2)
+        const health = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
+        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, stats.damage ? stats.damage : 2)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
 
@@ -101,7 +101,7 @@ export default class EntityDeployer {
         return entity;
     }
 
-    deployMage() {
+    deployMage(stats) {
 
         const sprite = this.scene.add.sprite(100, 100, 'mage');
         const position = new PositionComponent(this.scene.player.position.x, this.scene.player.position.y);
@@ -110,8 +110,8 @@ export default class EntityDeployer {
         const spriteAnimation = new SpriteAnimationComponent('mage', { start: 36, end: 39 });
         const attackAnimation = new SpriteAnimationComponent('mage-attack', { start: 40, end: 43 });
         const deathAnimation = new SpriteAnimationComponent('mage-death', { start: 20, end: 23 });
-        const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Mage(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1)
+        const health = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
+        const entity = new Mage(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, stats.damage ? stats.damage : 1)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
 

@@ -14,7 +14,7 @@ export default class StartScene extends Phaser.Scene {
 
         this.add.text(centerX - 200, centerY - 150, 'Eternal Eclipse', { fontFamily: 'custom', fontSize: '70px', });
         this.add.text(centerX + 190, centerY - 140, '™', { fontFamily: 'arial', fontSize: '18px', });
-        this.add.text(centerX - 310, centerY + 150, '© All Rights Reserved To You\n\t That is taking your time to read this\n little placeholder text in the corner of the screen ;)', { fontFamily: 'custom', fontSize: '20px', width: '390' });
+        this.add.text(centerX - 290, centerY + 150, '© All Rights Reserved To You\n\t That is taking your time to read this\n little placeholder text in the corner of the screen ;)', { fontFamily: 'custom', fontSize: '20px', width: '390' });
         let text = this.add.text(centerX - 90, centerY, 'CLICK BUTTON', { fontFamily: 'custom', fontSize: '30px', });
 
         let isVisible = true;

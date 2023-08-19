@@ -5,7 +5,7 @@ export default class FogOfWar {
         this.mapHeight = mapHeight;
         this.sightRadius = sightRadius;
         this.graphics = this.scene.add.graphics();
-        this.looseSpeed = .05
+        this.looseSpeed = .02
     }
 
     isHidden(lightSourcePosition, entity, radius) {

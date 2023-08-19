@@ -4,7 +4,7 @@ import GameDataComponent from "../components/GameDataComponent.js";
 export default class LevelProgressionSystem {
     constructor(scene) {
         this.scene = scene
-        this.gameData = new GameDataComponent()
+        this.gameData = this.scene.gameData
         this.initTimers();
     }
 
@@ -15,6 +15,7 @@ export default class LevelProgressionSystem {
         this.skeletonDeployTimer.start();
         this.acherDeployTimer.start();
         this.archersShootTimer.start();
+        // this.initShootSystem(300);
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -128,6 +129,13 @@ export default class LevelProgressionSystem {
 
         this.verifyEndLevelTimer = new TimerManager(this.scene, this, 1000, this.verifyEndLevel);
 
+    }
+
+    initShootSystem(period){
+        if (this.archersShootTimer) {
+            this.archersShootTimer.stop();
+        }
+        this.archersShootTimer = new TimerManager(this.scene, this, 300, this.shootArrows)
     }
 
     shootArrows() {
@@ -252,13 +260,13 @@ export default class LevelProgressionSystem {
         }
 
         while (this.scene.archersList.length < 10)
-            this.scene.entityDeployer.deployArcher()
+            this.scene.entityDeployer.deployArcher(this.gameData.archerStats)
 
         while (this.scene.soldierList.length < 10)
-            this.scene.entityDeployer.deploySoldier()
+            this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats)
 
         while (this.scene.mages.length < 4)
-            this.scene.entityDeployer.deployMage()
+            this.scene.entityDeployer.deployMage(this.gameData.mageStats)
 
         this.acherDeployTimer.stop();
 
