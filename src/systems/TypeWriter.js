@@ -8,7 +8,7 @@ export default class TypeWriter {
         this.sound = sound;
         this.currentChar = 0;
         this.isFinished = false;
-        this.delay = 50; // Default delay
+        this.delay = 50;
     }
 
     start() {
@@ -23,7 +23,6 @@ export default class TypeWriter {
         this.currentChar++;
 
         if (char === '\n') {
-            // If the character is a newline, stop the current timer and start a new one with 1-second delay
             this.timerManager.stop();
             this.timerManager = new TimerManager(this.scene, this, 1000, this.resumeTyping);
             this.timerManager.start();
@@ -39,4 +38,17 @@ export default class TypeWriter {
         this.timerManager = new TimerManager(this.scene, this, this.delay, this.addChar);
         this.timerManager.start();
     }
+
+    skip() {
+        this.timerManager.stop();
+
+        this.textObject.text = this.fullText;
+
+        if (this.sound.isPlaying) {
+            this.sound.stop();
+        }
+
+        this.isFinished = true;
+    }
+
 }

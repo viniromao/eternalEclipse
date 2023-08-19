@@ -73,5 +73,30 @@ export default class AnimationSystem {
         }, this.scene);
     }
 
+    addOneTimeAnimation(sprite, customAnimation, frameRate) {
+        this.scene.anims.create({
+            key: customAnimation.key,
+            frames: this.scene.anims.generateFrameNumbers('hit', customAnimation.frameConfig),
+            frameRate: frameRate,
+            repeat: 0,
+        });
+
+        sprite.anims.play(customAnimation.key);
+
+        sprite.on('animationcomplete', () => {
+            sprite.destroy();
+        });
+    }
+
+    addDrownedAnimation(sprite, customAnimation, frameRate) {
+        this.scene.anims.create({
+            key: customAnimation.key,
+            frames: this.scene.anims.generateFrameNumbers('drowned', customAnimation.frameConfig),
+            frameRate: frameRate,
+            repeat: -1,
+        });
+
+        sprite.anims.play(customAnimation.key);
+    }
 
 }

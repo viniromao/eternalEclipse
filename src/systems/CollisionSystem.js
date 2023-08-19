@@ -1,3 +1,5 @@
+import SpriteAnimationComponent from "../components/SpriteAnimationComponent.js"
+
 export default class CollisionSystem {
     constructor(scene, dodgeDistance, collisionDistance) {
         this.scene = scene;
@@ -105,6 +107,10 @@ export default class CollisionSystem {
                     soldier.sprite.y = soldier.position.y;
 
                     this.scene.attackHumanSound.play();
+
+                    const currentSprite = this.scene.add.sprite(monster.position.x - 5, monster.position.y, 'hit');
+                    this.scene.animationSystem.addOneTimeAnimation(currentSprite, new SpriteAnimationComponent('hit', { start: 0, end: 3 }), 20)
+
                     //deal damage
                     monster.health.dealDamage(soldier.damage)
                     soldier.health.dealDamage(monster.getDamage())

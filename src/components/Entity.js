@@ -1,5 +1,5 @@
 export default class Entity {
-    constructor(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage) {
+    constructor(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage, drowned, drownedSprite, drownedAnimation) {
         this.sprite = sprite; //of type this.add.sprite(this.sys.game.config.width / 2, this.sys.game.config.height - 15, 'player');
         this.spriteAnimation = spriteAnimation;
         this.deathAnimation = deathAnimation;
@@ -12,15 +12,21 @@ export default class Entity {
         this.markedForDestruction = false;
         this.dying = false;
         this.damage = damage;
+        this.drowned = drowned;
+        this.drownedSprite = drownedSprite;
+        this.drownedAnimation = drownedAnimation;
+        if (this.drownedSprite)
+            this.drownedSprite.setVisible(this.drowned);
     }
 
     destroy() {
-        // Destroy the sprite (if it's a Phaser sprite object)
         if (this.sprite) {
             this.sprite.destroy();
         }
+        if (this.drownedSprite) {
+            this.drownedSprite.destroy();
+        }
 
-        // Nullify properties to help with garbage collection
         this.sprite = null;
         this.spriteAnimation = null;
         this.position = null;

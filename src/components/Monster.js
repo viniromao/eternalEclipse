@@ -1,8 +1,8 @@
 import Entity from "./Entity.js"
 
 export default class Monster extends Entity {
-    constructor(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage, hidden, xp) {
-        super(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage)
+    constructor(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage, hidden, xp, drowned, drownedSprite, drownedAnimation) {
+        super(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, damage, drowned, drownedSprite, drownedAnimation)
         this.hidden = hidden
         this.xp = xp
     }

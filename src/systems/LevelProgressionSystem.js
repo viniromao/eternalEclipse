@@ -136,6 +136,7 @@ export default class LevelProgressionSystem {
         }
         this.scene.soldierManagementSystem.shootArchersArrows()
         this.scene.soldierManagementSystem.castFireballs()
+        this.scene.animationSystem.addGoodGuyCustomAnimation(this.scene.player, this.scene.player.attackAnimation, null, 4)
     }
 
     createScorpion() {
@@ -254,7 +255,7 @@ export default class LevelProgressionSystem {
         while (this.scene.archersList.length < 10)
             this.scene.entityDeployer.deployArcher()
 
-        while (this.scene.soldierList.length < 10)
+        while (this.scene.soldierList.length < 18)
             this.scene.entityDeployer.deploySoldier()
 
         while (this.scene.mages.length < 4)

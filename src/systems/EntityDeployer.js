@@ -44,9 +44,12 @@ export default class EntityDeployer {
         const velocity = new VelocityComponent(0, 0);
         const spriteAnimation = new SpriteAnimationComponent(`${randomCharacter}`, { start: randomCharacter, end: randomCharacter + 3 });
         const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1)
+        const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
+        const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1, false, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
+        this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
 
         this.scene.monstersList.push(entity)
 
@@ -64,9 +67,12 @@ export default class EntityDeployer {
         const deathAnimation = new SpriteAnimationComponent('soldierDeath', { start: 20, end: 23 });
         const attackAnimation = new SpriteAnimationComponent('soldierAttack', { start: 16, end: 19 });
         const health = new HealthSystem(this.scene, position, 10)
-        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1)
+        const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
+        const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
+        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1, false, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
+        this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
 
         const positionToInsert = Math.floor(Math.random() * (this.scene.soldierList.length + 1));
 
@@ -87,9 +93,12 @@ export default class EntityDeployer {
         const attackAnimation = new SpriteAnimationComponent('archer-attack', { start: 24, end: 27 });
         const deathAnimation = new SpriteAnimationComponent('archerDeath', { start: 20, end: 23 });
         const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 2)
+        const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
+        const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
+        const entity = new Soldier(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 2, false, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
+        this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
 
         // Add the new soldier to the list and then update all positions
         let positionToInsert = Math.floor(Math.random() * (this.scene.archersList.length + 1));
@@ -111,9 +120,12 @@ export default class EntityDeployer {
         const attackAnimation = new SpriteAnimationComponent('mage-attack', { start: 40, end: 43 });
         const deathAnimation = new SpriteAnimationComponent('mage-death', { start: 20, end: 23 });
         const health = new HealthSystem(this.scene, position, 3)
-        const entity = new Mage(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1)
+        const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
+        const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
+        const entity = new Mage(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, 0, health, 1, false, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addGoodGuyAnimation(entity);
+        this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
 
         let positionToInsert = Math.floor(Math.random() * (this.scene.mages.length + 1));
 
@@ -132,15 +144,18 @@ export default class EntityDeployer {
         const health = new HealthSystem(this.scene, position, 15)
         const finalPosition = position;
         const spriteAnimation = new SpriteAnimationComponent('king', { start: 4, end: 7 });
+        const attackAnimation = new SpriteAnimationComponent('king-order', { start: 0, end: 4 });
+        const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
+        const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
+        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, null, attackAnimation, finalPosition, health, 0, false, drownedSprite, drownedAnimation)
 
-        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, null, null, finalPosition, health, 0)
-
+        this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
         this.scene.animationSystem.addGoodGuyAnimation(this.scene.player);
     }
 
     deployTheKingLvl2() {
         const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
-        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height/2 + 50);
+        const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2 + 50);
         const velocity = new VelocityComponent(0, 0);
         const health = new HealthSystem(this.scene, position, 5)
         const finalPosition = position;
