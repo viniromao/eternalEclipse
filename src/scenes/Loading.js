@@ -36,6 +36,9 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 192, frameHeight: 96 });
         this.load.audio('typewriter', 'assets/sfx/typewriter.mp3');
         this.load.audio('victorySong', 'assets/music/victory.mp3');
+        this.load.audio('finalSong', 'assets/music/finalSong.mp3');
+        this.load.audio('finalTheme', 'assets/music/finalTheme.mp3');
+        this.load.audio('swampTheme', 'assets/music/swampTheme.mp3');
         this.load.audio('startSound', 'assets/music/startScreen.mp3');
         this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
         this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
@@ -44,8 +47,19 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
         this.load.audio('attackHuman', 'assets/sfx/attackHuman.mp3');
+        this.load.audio('levelUpSound', 'assets/sfx/levelup.mp3');
+        this.load.audio('upgradeSound', 'assets/sfx/upgrade.mp3');
+        this.load.audio('clickSound', 'assets/sfx/click.mp3');
+
         this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 192, frameHeight: 96 });
         this.load.spritesheet('upgradeIcons', 'assets/ui/upgrades_sheet.png', { frameWidth: 36, frameHeight: 36 });
+
+        // console.log('%c   Join our Game Development Team!   ', 'background: #222; color: #bada55; font-size: 20px;');
+        // console.log('%c        We are looking for passionate developers like you!', 'font-style: italic; font-size: 14px;');
+        // console.log('%c        ▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄', 'color: #33cc33');
+        // console.log('%c        █░░░█░░░█░░░█░░░█░░░█', 'color: #33cc33');
+        // console.log('%c        ▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀', 'color: #33cc33');
+        // console.log('%cVisit our website: %chttps://www.example.com', 'color: #555', 'color: blue; text-decoration: underline;');
     }
 
     update() {

@@ -15,9 +15,9 @@ import GameDataComponent from '../components/GameDataComponent.js';
 import OverlapSystem from "../systems/OverlapSystem.js"
 
 
-export default class Level2Scene extends Phaser.Scene {
+export default class Level3Scene extends Phaser.Scene {
     constructor() {
-        super({ key: 'Level2Scene' });
+        super({ key: 'Level3Scene' });
         this.gameData = new GameDataComponent();
         this.progressBarManager = null; // Add this line
     }
@@ -29,6 +29,84 @@ export default class Level2Scene extends Phaser.Scene {
 
     init() {
         this.initData();
+        this.flag1 = this.add.sprite(50, 50, 'background');
+        this.flag2 = this.add.sprite(50, 100, 'background');
+        this.flag3 = this.add.sprite(50, 150, 'background');
+        this.flag4 = this.add.sprite(50, 200, 'background');
+        this.flag5 = this.add.sprite(50, 250, 'background');
+        this.flag6 = this.add.sprite(50, 300, 'background');
+        this.flag7 = this.add.sprite(50, 350, 'background');
+        this.flag8 = this.add.sprite(50, 400, 'background');
+
+        this.flag9 = this.add.sprite(this.cameras.main.width - 50, 50, 'background');
+        this.flag10 = this.add.sprite(this.cameras.main.width - 50, 100, 'background');
+        this.flag11 = this.add.sprite(this.cameras.main.width - 50, 150, 'background');
+        this.flag12 = this.add.sprite(this.cameras.main.width - 50, 200, 'background');
+        this.flag13 = this.add.sprite(this.cameras.main.width - 50, 250, 'background');
+        this.flag14 = this.add.sprite(this.cameras.main.width - 50, 300, 'background');
+        this.flag15 = this.add.sprite(this.cameras.main.width - 50, 350, 'background');
+        this.flag16 = this.add.sprite(this.cameras.main.width - 50, 400, 'background');
+
+        this.pentagram = this.add.sprite(80, 80, 'background');
+        this.pentagram2 = this.add.sprite(80, 370, 'background');
+        this.pentagram3 = this.add.sprite(this.cameras.main.width - 80, 80, 'background');
+        this.pentagram4 = this.add.sprite(this.cameras.main.width - 80, 370, 'background');
+
+
+        this.something = this.add.sprite(this.cameras.main.width - 80, 130, 'background');
+        this.something2 = this.add.sprite(this.cameras.main.width - 80, 320, 'background');
+        this.something3 = this.add.sprite( 80, 130, 'background');
+        this.something4 = this.add.sprite( 80, 320, 'background');
+
+
+        this.anims.create({
+            key: 'flag',
+            frames: this.anims.generateFrameNumbers('background', { start: 32, end: 35 }),
+            frameRate: 7,
+            repeat: -1 // Loop the animation
+        });
+
+        this.anims.create({
+            key: 'pentagram',
+            frames: this.anims.generateFrameNumbers('background', { start: 36, end: 39 }),
+            frameRate: 2,
+            repeat: -1 // Loop the animation
+        });
+
+        this.anims.create({
+            key: 'something',
+            frames: this.anims.generateFrameNumbers('background', { start: 24, end: 27 }),
+            frameRate: 2,
+            repeat: -1 // Loop the animation
+        });
+
+        this.something.anims.play('something', true)
+        this.something2.anims.play('something', true)
+        this.something3.anims.play('something', true)
+        this.something4.anims.play('something', true)
+
+
+        this.pentagram.anims.play('pentagram', true)
+        this.pentagram2.anims.play('pentagram', true)
+        this.pentagram3.anims.play('pentagram', true)
+        this.pentagram4.anims.play('pentagram', true)
+
+        this.flag1.anims.play('flag', true);
+        this.flag2.anims.play('flag', true);
+        this.flag3.anims.play('flag', true);
+        this.flag4.anims.play('flag', true);
+        this.flag5.anims.play('flag', true);
+        this.flag6.anims.play('flag', true);
+        this.flag7.anims.play('flag', true);
+        this.flag8.anims.play('flag', true);
+        this.flag9.anims.play('flag', true);
+        this.flag10.anims.play('flag', true);
+        this.flag11.anims.play('flag', true);
+        this.flag12.anims.play('flag', true);
+        this.flag13.anims.play('flag', true);
+        this.flag14.anims.play('flag', true);
+        this.flag15.anims.play('flag', true);
+        this.flag16.anims.play('flag', true);
     }
 
     create() {
@@ -55,7 +133,7 @@ export default class Level2Scene extends Phaser.Scene {
     }
 
     createPlayer() {
-        this.entityDeployer.deployTheKingLvl2();
+        this.entityDeployer.deployTheKingLvl3();
     }
 
 
@@ -67,7 +145,7 @@ export default class Level2Scene extends Phaser.Scene {
         this.isPaused = true
         this.themeSound.stop();
         this.gameOverSound.play();
-        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'Level2Scene' });
+        this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'Level3Scene' });
     }
 
     update() {
@@ -144,7 +222,7 @@ export default class Level2Scene extends Phaser.Scene {
         this.deathSystem = new DeathSystem(this);
         this.overlapSystem = new OverlapSystem()
         this.levelProgressionSystem = new LevelProgressionSystem(this);
-        this.levelProgressionSystem.level2()
+        this.levelProgressionSystem.level3()
     }
 
     initInputs() {
@@ -165,7 +243,7 @@ export default class Level2Scene extends Phaser.Scene {
 
 
     initData() {
-        this.nextScene = 'LoreScene2'
+        this.nextScene = 'FinalScene'
         this.isPaused = false;
         this.archerRange = new ArcherRange(this, 50);
         this.arrows = []
@@ -188,8 +266,8 @@ export default class Level2Scene extends Phaser.Scene {
         this.levelUpSound = this.sound.add('levelUpSound');
         this.levelUpSound.setVolume(.2);
 
-        this.themeSound = this.sound.add('swampTheme', { loop: true });
-        this.themeSound.setVolume(.1);
+        this.themeSound = this.sound.add('finalTheme', { loop: true });
+        this.themeSound.setVolume(.05);
         this.themeSound.play();
 
         this.soldierDeathSound = this.sound.add('death')

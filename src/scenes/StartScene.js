@@ -42,6 +42,6 @@ export default class StartScene extends Phaser.Scene {
     startGame() {
         this.titleScreenSound.stop();
 
-        this.scene.start('MainScene');
+        this.scene.start('LoreScene1');
     }
 }

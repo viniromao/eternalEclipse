@@ -3,10 +3,8 @@ export default class GrassBackground {
         this.scene = scene;
         this.grassSprites = [];
 
-        this.scene.load.on('complete', () => {
-            this.initGrassSprites();
-            this.initGrassAnimation();
-        });
+        this.initGrassSprites();
+        this.initGrassAnimation();
 
         this.scene.load.start();
     }

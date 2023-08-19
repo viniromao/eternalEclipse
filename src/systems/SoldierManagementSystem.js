@@ -209,6 +209,32 @@ export default class SoldierManagementSystem {
         }
     }
 
+    updateMagesCirclePositions() {
+        const N = this.scene.mages.length;
+
+        const angleIncrement = Phaser.Math.DegToRad(360 / Math.max((N - 1) + 1, 1));
+
+        const startAngle = Phaser.Math.DegToRad(180);
+
+        for (let i = 0; i < N; i++) {
+            const angle = startAngle - angleIncrement * i;
+
+            if (angle * 180 / Math.PI > 90) {
+                this.scene.mages[i].sprite.flipX = true;
+            } else {
+                this.scene.mages[i].sprite.flipX = false;
+            }
+
+            this.scene.mages[i].formationAngle = angle
+
+            const x = this.scene.player.position.x + this.radius / 4 * Math.cos(angle);
+            const y = this.scene.player.position.y - this.radius / 4 * Math.sin(angle);
+
+            this.scene.mages[i].finalPosition.x = x;
+            this.scene.mages[i].finalPosition.y = y;
+        }
+    }
+
     shootArchersArrows() {
         this.scene.archersList.forEach(archer => {
             if (!archer.dying && !(archer instanceof Mage))

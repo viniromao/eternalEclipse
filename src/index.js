@@ -24,6 +24,10 @@ import SpriteAnimationComponent from "./components/SpriteAnimationComponent.js"
 import OverlapSystem from "./systems/OverlapSystem.js"
 import LoreScene1 from "./scenes/LoreScene1.js"
 import WarningScene2 from "./scenes/WarningScene2.js"
+import WarningScene3 from "./scenes/WarningScene3.js"
+import LoreScene2 from "./scenes/LoreScene2.js"
+import Level3Scene from "./scenes/Level3Scene.js"
+import FinalScene from "./scenes/FinalScene.js"
 
 import WarningScene from "./scenes/WarningScene.js"
 
@@ -165,42 +169,24 @@ class MainScene extends Phaser.Scene {
     }
 
     initInputs() {
-        this.input.on('pointerdown', () => {
-            this.entityDeployer.deploySoldier(this.soldierManagementSystem);
-        });
-
         this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
-        this.gameOverKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
-
         this.upgradeKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U);
-
-        // this.input.on('pointermove', (pointer) => {
-        //     if (this.archerRange != null) {
-        //         this.archerRange.draw(pointer.x, pointer.y);
-        //     }
-        // });
     }
 
     inputListener() {
+        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
+            this.togglePause()
+        }
+
+
         if (Phaser.Input.Keyboard.JustDown(this.upgradeKey)) {
             this.upgrade();
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.gameOverKey)) {
-            this.gameOver();
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.escKey)) {
-            this.togglePause();
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE))) {
-            this.progressBarManager.gainXP(10); // Increase XP by 1
         }
     }
 
 
     initData() {
+        this.nextScene = 'LoreScene'
         this.grassBackground = new GrassBackground(this);
         this.isPaused = false;
         this.archerRange = new ArcherRange(this, 50);
@@ -215,10 +201,21 @@ class MainScene extends Phaser.Scene {
     }
 
     initSounds() {
+        this.clickSound = this.sound.add('clickSound');
+        this.clickSound.setVolume(.2);
+
+        this.upgradeSound = this.sound.add('upgradeSound');
+        this.upgradeSound.setVolume(.2);
+
+        this.levelUpSound = this.sound.add('levelUpSound');
+        this.levelUpSound.setVolume(.2);
+
         this.themeSound = this.sound.add('themeSound');
         this.themeSound.setVolume(.1);
+
         this.themeSound2 = this.sound.add('themeSound2', { loop: true });
         this.themeSound2.setVolume(.4);
+
         this.themeSound.play();
 
         this.themeSound.once('complete', () => {
@@ -226,7 +223,7 @@ class MainScene extends Phaser.Scene {
         });
 
         this.soldierDeathSound = this.sound.add('death')
-        this.soldierDeathSound.setVolume(.6);
+        this.soldierDeathSound.setVolume(.4);
 
         this.monsterDeathSound = this.sound.add('monsterDeath')
         this.monsterDeathSound.setVolume(.1);
@@ -263,7 +260,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, LoreScene1, WarningScene, StartScene, MainScene, Level2Scene, WarningScene2, VictoryScene, UpgradeScene, LoreScene, GameOverScene],
+    }, scene: [LoadingScene, LoreScene1,LoreScene2,WarningScene3, WarningScene,FinalScene, StartScene, MainScene, Level2Scene, WarningScene2,Level3Scene, VictoryScene, UpgradeScene, LoreScene, GameOverScene],
     backgroundColor: '#000'
 };
 

@@ -1,15 +1,11 @@
-export default class VictoryScene extends Phaser.Scene {
+export default class FinalScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'VictoryScene' });
-    }
-
-    init(data) {
-        this.next = data.nextScene;
+        super({ key: 'FinalScene' });
     }
 
     create() {
-        this.victorySound = this.sound.add('victorySong');
-        this.victorySound.setVolume(.4);
+        this.victorySound = this.sound.add('finalSong');
+        this.victorySound.setVolume(.05);
         this.victorySound.play();
 
         this.victorySound.once('complete', () => {
@@ -21,13 +17,13 @@ export default class VictoryScene extends Phaser.Scene {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
 
-        this.victoryText = this.add.text(centerX - 110, centerY - 150, 'Victory!', { fontFamily: 'custom', fontSize: '70px' });
+        this.victoryText = this.add.text(centerX - 110, centerY - 70, 'The End', { fontFamily: 'custom', fontSize: '70px' });
     }
 
     nextScene() {
         this.victorySound.stop();
         this.scene.stop(); // Stop the sound when transitioning to the next scene
-        this.scene.start(this.next, {nextScene: this.next});
+        this.scene.start('StartScene');
     }
 
     shutdown() {
