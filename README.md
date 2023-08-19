@@ -1,8 +1,24 @@
 # EternalEclipse
 
-## How to Install:
-  - You must have Node and npm in your machine
-  - Run npm i 
+## Prerequisites
+Before you begin, make sure you have the following installed on your machine:
+- [Node.js](https://nodejs.org/) (which comes with npm)
+
+## How to Install
+Follow these steps to install EternalEclipse:
+
+1. Open your terminal or command prompt.
+2. Navigate to the directory where you want to install the project.
+3. Run the following command to install all necessary dependencies:
+   ```bash
+   npm i
 
 ## How to Run
-    - run npm start
+After installation, you can run EternalEclipse with the following steps:
+
+1. Make sure you're in the project directory where you installed EternalEclipse.
+2. Run the following command to start the application:
+   ```bash
+   npm start
+
+Enjoy!
