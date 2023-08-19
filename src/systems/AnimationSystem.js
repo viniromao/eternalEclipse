@@ -73,6 +73,30 @@ export default class AnimationSystem {
         }, this.scene);
     }
 
+    addKingDeathAnimation(entity, customAnimation, callback, frameRate) {
+        return new Promise(resolve => {
+            this.scene.anims.create({
+                key: customAnimation.key,
+                frames: this.scene.anims.generateFrameNumbers('goodGuys', customAnimation.frameConfig),
+                frameRate: frameRate,
+                repeat: 0,
+            });
+
+            entity.sprite.anims.play(customAnimation.key);
+
+            entity.sprite.off('animationcomplete'); // Remove previous listener
+            entity.sprite.on('animationcomplete', () => {
+                if (entity.sprite)
+                    entity.sprite.anims.play(entity.spriteAnimation.key);
+
+                if (callback) {
+                    callback();
+                }
+                resolve();
+            }, this.scene);
+        });
+    }
+
     addOneTimeAnimation(sprite, customAnimation, frameRate) {
         this.scene.anims.create({
             key: customAnimation.key,

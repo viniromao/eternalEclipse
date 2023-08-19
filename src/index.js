@@ -23,8 +23,10 @@ import LoreScene from "./scenes/LoreScene.js"
 import SpriteAnimationComponent from "./components/SpriteAnimationComponent.js"
 import OverlapSystem from "./systems/OverlapSystem.js"
 import LoreScene1 from "./scenes/LoreScene1.js"
+import WarningScene2 from "./scenes/WarningScene2.js"
 
 import WarningScene from "./scenes/WarningScene.js"
+
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -34,7 +36,7 @@ class MainScene extends Phaser.Scene {
     }
 
     upgrade() {
-        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar,scene: this},this.soldierManagementSystem); 
+        this.scene.launch('UpgradeScene', { gameData: this.gameData, fogOfWar: this.fogOfWar, scene: this }, this.soldierManagementSystem);
         this.togglePause(); // Pause the game
     }
 
@@ -65,6 +67,7 @@ class MainScene extends Phaser.Scene {
 
     togglePause() {
         this.isPaused = !this.isPaused;
+        this.levelProgressionSystem.mainTimer.paused = !this.levelProgressionSystem.mainTimer.paused
         this.physics.world.timeScale = this.isPaused ? 0 : 1;
     }
 
@@ -80,7 +83,7 @@ class MainScene extends Phaser.Scene {
 
     gameOver() {
         this.grassBackground.destroySprites()
-        this.togglePause();
+        this.isPaused = true
         this.themeSound.stop();
         this.themeSound2.stop();
         this.gameOverSound.play();
@@ -208,6 +211,7 @@ class MainScene extends Phaser.Scene {
         this.archersList = []
         this.mages = []
         this.counter = 0
+        this.gameIsOver = false;
     }
 
     initSounds() {
@@ -259,7 +263,7 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }, scene: [LoadingScene, LoreScene1, WarningScene, StartScene, MainScene, Level2Scene, VictoryScene, UpgradeScene, LoreScene, GameOverScene],
+    }, scene: [LoadingScene, LoreScene1, WarningScene, StartScene, MainScene, Level2Scene, WarningScene2, VictoryScene, UpgradeScene, LoreScene, GameOverScene],
     backgroundColor: '#000'
 };
 

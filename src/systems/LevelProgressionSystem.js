@@ -6,6 +6,7 @@ export default class LevelProgressionSystem {
         this.scene = scene
         this.gameData = this.scene.gameData
         this.initTimers();
+        
     }
 
     level1() {
@@ -15,24 +16,23 @@ export default class LevelProgressionSystem {
         this.skeletonDeployTimer.start();
         this.acherDeployTimer.start();
         this.archersShootTimer.start();
-        // this.initShootSystem(300);
 
-        this.scene.time.addEvent({
+        this.mainTimer = this.scene.time.addEvent({
             delay: 1000,
             callback: () => {
                 this.elapsedTime += 1;
 
-                if (this.elapsedTime === 30) {
+                if (this.elapsedTime === 5) {
                     this.monsterSwarm.stop();
                     this.wormDeployTimer.start()
                 }
 
-                if (this.elapsedTime === 60) {
+                if (this.elapsedTime === 5) {
                     this.scorpionDeployTimer.start()
 
                 }
 
-                if (this.elapsedTime === 90) {
+                if (this.elapsedTime === 5) {
                     this.batDeployTimer.start();
                 }
 
@@ -46,7 +46,6 @@ export default class LevelProgressionSystem {
                     this.monsterSwarm.stop();
                     this.acherDeployTimer.stop();
                     this.archersShootTimer.stop();
-                    this.scene.stopScene();
                     this.verifyEndLevelTimer.start();
                 }
             },
@@ -260,13 +259,13 @@ export default class LevelProgressionSystem {
             return;
         }
 
-        while (this.scene.archersList.length < 10)
+        while (this.scene.archersList.length < 0)
             this.scene.entityDeployer.deployArcher(this.gameData.archerStats)
 
-        while (this.scene.soldierList.length < 18)
+        while (this.scene.soldierList.length < 0)
             this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats)
 
-        while (this.scene.mages.length < 4)
+        while (this.scene.mages.length < 0)
             this.scene.entityDeployer.deployMage(this.gameData.mageStats)
 
         this.acherDeployTimer.stop();

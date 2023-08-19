@@ -26,8 +26,12 @@ export default class CollisionSystem {
                     new Phaser.Geom.Circle(this.scene.player.position.x, this.scene.player.position.y, this.collisionDistance))) {
                     this.scene.player.health.dealDamage(monster.getDamage())
                     monster.markedForDestruction = true
-                    if (this.scene.player.health.currentHealth <= 0) {
-                        this.scene.gameOver();
+                    this.scene.attackHumanSound.play();
+
+                    if (this.scene.player.health.currentHealth <= 0 && !this.scene.gameIsOver) {
+                        this.scene.gameIsOver = true
+                        this.scene.togglePause()
+                        this.scene.animationSystem.addKingDeathAnimation(this.scene.player, this.scene.player.deathAnimation, () => { this.scene.gameOver() }, 1);
                     }
                 }
             }
@@ -85,6 +89,9 @@ export default class CollisionSystem {
                     new Phaser.Geom.Circle(monster.position.x, monster.position.y, this.collisionDistance),
                     new Phaser.Geom.Circle(soldier.position.x, soldier.position.y, this.collisionDistance))) {
 
+                    const currentSprite = this.scene.add.sprite(monster.position.x - 5, monster.position.y, 'hit');
+                    this.scene.animationSystem.addOneTimeAnimation(currentSprite, new SpriteAnimationComponent('hit', { start: 0, end: 3 }), 20)
+
                     if (soldier.attackAnimation) {
                         this.scene.animationSystem.addGoodGuyCustomAnimation(soldier, soldier.attackAnimation, null, 8)
                     }
@@ -108,8 +115,7 @@ export default class CollisionSystem {
 
                     this.scene.attackHumanSound.play();
 
-                    const currentSprite = this.scene.add.sprite(monster.position.x - 5, monster.position.y, 'hit');
-                    this.scene.animationSystem.addOneTimeAnimation(currentSprite, new SpriteAnimationComponent('hit', { start: 0, end: 3 }), 20)
+
 
                     //deal damage
                     monster.health.dealDamage(soldier.damage)

@@ -46,7 +46,7 @@ export default class EntityDeployer {
         const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
         const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
         const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1, false, drownedSprite, drownedAnimation)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1, true, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
         this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
@@ -142,13 +142,15 @@ export default class EntityDeployer {
         const sprite = this.scene.add.sprite(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height / 2, 'king');
         const position = new PositionComponent(this.scene.sys.game.config.width / 2, this.scene.sys.game.config.height - 25);
         const velocity = new VelocityComponent(0, 0);
-        const health = new HealthSystem(this.scene, position, 15)
+        const health = new HealthSystem(this.scene, position, 5)
         const finalPosition = position;
         const spriteAnimation = new SpriteAnimationComponent('king', { start: 4, end: 7 });
         const attackAnimation = new SpriteAnimationComponent('king-order', { start: 0, end: 4 });
+        const deathAnimation = new SpriteAnimationComponent('king-death', { start: 8, end: 11 });
+
         const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
         const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
-        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, null, attackAnimation, finalPosition, health, 0, false, drownedSprite, drownedAnimation)
+        this.scene.player = new Entity(sprite, position, velocity, spriteAnimation, deathAnimation, attackAnimation, finalPosition, health, 0, false, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);
         this.scene.animationSystem.addGoodGuyAnimation(this.scene.player);

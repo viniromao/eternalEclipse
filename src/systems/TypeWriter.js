@@ -6,6 +6,7 @@ export default class TypeWriter {
         this.textObject = this.scene.add.text(x, y, '', { fontFamily: 'custom', fontSize: '24px' });
         this.fullText = text;
         this.sound = sound;
+        this.sound.setVolume(.1)
         this.currentChar = 0;
         this.isFinished = false;
         this.delay = 50;

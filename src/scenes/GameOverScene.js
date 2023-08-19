@@ -18,10 +18,10 @@ export default class GameOverScene extends Phaser.Scene {
 
         this.add.text(centerX - 130, centerY - 150, 'Game Over', { fontFamily: 'custom', fontSize: '70px' });
         this.add.text(centerX - 90, centerY - 70, 'The King is Dead', { fontFamily: 'custom', fontSize: '30px' });
-        this.add.text(centerX - 60, centerY - 20, 'Gonna Give Up Already?', { fontFamily: 'custom', fontSize: '15px' });
-        this.add.text(centerX + 85, centerY + 200, '2023 - Ivanez, Kessel Nebula, Eduga, Hallowk1d?', { fontFamily: 'custom', fontSize: '12px', width: '280' });
+        // this.add.text(centerX - 60, centerY - 20, 'Gonna Give Up Already?', { fontFamily: 'custom', fontSize: '15px' });
+        this.add.text(150, centerY + 200, '2023 - Ivanez, Neo32, Eduga, Hallowkid', { fontFamily: 'custom', fontSize: '24px', width: '280' });
 
-        const button = this.add.sprite(centerX, centerY + 90, 'button', 0);
+        const button = this.add.sprite(centerX, centerY + 80, 'button', 0);
 
         button.setInteractive();
 
