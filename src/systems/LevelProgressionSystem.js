@@ -6,6 +6,7 @@ export default class LevelProgressionSystem {
         this.scene = scene
         this.gameData = this.scene.gameData
         this.initTimers();
+        this.initShootSystem(3000);
     }
 
     level1() {
@@ -15,7 +16,6 @@ export default class LevelProgressionSystem {
         this.skeletonDeployTimer.start();
         this.acherDeployTimer.start();
         this.archersShootTimer.start();
-        // this.initShootSystem(300);
 
         this.scene.time.addEvent({
             delay: 1000,
@@ -103,7 +103,7 @@ export default class LevelProgressionSystem {
 
         this.batDeployTimer = new TimerManager(this.scene, this, 500, this.createBat);
 
-        this.archersShootTimer = new TimerManager(this.scene, this, 3000, this.shootArrows)
+        // this.archersShootTimer = new TimerManager(this.scene, this, 3000, this.shootArrows)
 
         this.piggyTimer = new TimerManager(this.scene, this, 1000, this.createPiggy);
 
@@ -132,11 +132,12 @@ export default class LevelProgressionSystem {
     }
 
     initShootSystem(period){
-        if (this.archersShootTimer) {
-            this.archersShootTimer.stop();
+        if (!this.archersShootTimer) {
+            this.archersShootTimer = new TimerManager(this.scene, this, period, this.shootArrows);
+            this.archersShootTimer.start();
         }
-        this.archersShootTimer = new TimerManager(this.scene, this, 300, this.shootArrows)
     }
+    
 
     shootArrows() {
         if (this.scene.isPaused) {

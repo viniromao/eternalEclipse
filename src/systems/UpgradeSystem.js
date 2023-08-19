@@ -3,6 +3,12 @@ export default class UpgradeSystem {
         this.currentScene = currentScene;
     }
     
+    MageAttackSpeed(){
+        console.log(this.currentScene.levelProgressionSystem.initShootSystem());
+        this.currentScene.levelProgressionSystem.initShootSystem(2000); // Call initShootSystem with the desired period
+        console.log(this.currentScene.levelProgressionSystem.initShootSystem());
+    }
+
     MageDamageUpgrade() {
         const upgradeModifier= 1; 
 

@@ -46,7 +46,7 @@ export default class EntityDeployer {
         const healthSystem = new HealthSystem(this.scene, position, stats.health ? stats.health : 3)
         const drownedSprite = this.scene.add.sprite(100, 100, 'drowned');
         const drownedAnimation = new SpriteAnimationComponent('drowned', { start: 0, end: 3 });
-        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1, false, drownedSprite, drownedAnimation)
+        const entity = new Monster(sprite, position, velocity, spriteAnimation, null, null, this.scene.player.position, healthSystem, stats.damage ? stats.damage : 1, true, stats.xp ? stats.xp : 1, true, drownedSprite, drownedAnimation)
 
         this.scene.animationSystem.addHiddenMonsterAnimation(entity);
         this.scene.animationSystem.addDrownedAnimation(drownedSprite, drownedAnimation, 2);

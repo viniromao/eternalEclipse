@@ -44,6 +44,10 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.audio('death', 'assets/sfx/death2.mp3');
         this.load.audio('monsterDeath', 'assets/sfx/death.wav');
         this.load.audio('attackHuman', 'assets/sfx/attackHuman.mp3');
+        this.load.audio('levelUpSound', 'assets/sfx/levelup.mp3');
+        this.load.audio('upgradeSound', 'assets/sfx/upgrade.mp3');
+        this.load.audio('clickSound', 'assets/sfx/click.mp3');
+
         this.load.spritesheet('button', 'assets/ui/start_button.png', { frameWidth: 192, frameHeight: 96 });
         this.load.spritesheet('upgradeIcons', 'assets/ui/upgrades_sheet.png', { frameWidth: 36, frameHeight: 36 });
     }
