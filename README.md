@@ -1,5 +1,7 @@
 # EternalEclipse
 
+Play [EternalEclipse on Itch.io](https://neo32.itch.io/eternaleclipse) now!
+
 ![gameScreenshot](https://github.com/viniromao/EternalEclipse/assets/49294138/fc340a0b-267d-4b54-b38a-d74c9f03f90e)
 
 ## Prerequisites
