@@ -82,14 +82,12 @@ class MainScene extends Phaser.Scene {
 
     stopScene() {
         this.themeSound.stop();
-        this.themeSound2.stop();
     }
 
     gameOver() {
         this.grassBackground.destroySprites()
         this.isPaused = true
         this.themeSound.stop();
-        this.themeSound2.stop();
         this.gameOverSound.play();
         this.scene.launch('GameOverScene', { gameOverSound: this.gameOverSound, previousScene: 'MainScene' });
     }
@@ -210,18 +208,11 @@ class MainScene extends Phaser.Scene {
         this.levelUpSound = this.sound.add('levelUpSound');
         this.levelUpSound.setVolume(.2);
 
-        this.themeSound = this.sound.add('themeSound');
+        this.themeSound = this.sound.add('themeSound', {loop: true});
         this.themeSound.setVolume(.1);
 
-        this.themeSound2 = this.sound.add('themeSound2', { loop: true });
-        this.themeSound2.setVolume(.4);
-
         this.themeSound.play();
-
-        this.themeSound.once('complete', () => {
-            this.themeSound2.play();
-        });
-
+        
         this.soldierDeathSound = this.sound.add('death')
         this.soldierDeathSound.setVolume(.4);
 

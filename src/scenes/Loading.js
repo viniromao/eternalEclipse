@@ -40,8 +40,7 @@ export default class LoadingScene extends Phaser.Scene {
         this.load.audio('finalTheme', 'assets/music/finalTheme.mp3');
         this.load.audio('swampTheme', 'assets/music/swampTheme.mp3');
         this.load.audio('startSound', 'assets/music/startScreen.mp3');
-        this.load.audio('themeSound', 'assets/music/mistOfMiseryV2.mp3');
-        this.load.audio('themeSound2', 'assets/music/mistOfMiseryV4.mp3');
+        this.load.audio('themeSound', 'assets/music/mistOfMisery.mp3');
         this.load.audio('titleScreenSound', 'assets/music/titleScreen.mp3');
         this.load.audio('gameOver', 'assets/music/gameOverTheme.mp3');
         this.load.audio('death', 'assets/sfx/death2.mp3');
