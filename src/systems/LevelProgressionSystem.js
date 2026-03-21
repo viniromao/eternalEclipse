@@ -505,35 +505,18 @@ export default class LevelProgressionSystem {
             return;
         }
 
-        if (this.scene.sys.config.key == 'Level2Scene') {
-            while (this.scene.archersList.length < 20)
-                this.scene.entityDeployer.deployArcher(this.gameData.archerStats, true)
+        const sceneKey = this.scene.sys.settings.key;
+        const counts = this.gameData.initialArmy[sceneKey] || this.gameData.initialArmy.MainScene;
+        const drowned = sceneKey === 'Level2Scene';
 
-            while (this.scene.soldierList.length < 35)
-                this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats, true)
+        while (this.scene.archersList.length < counts.archers)
+            this.scene.entityDeployer.deployArcher(this.gameData.archerStats, drowned)
 
-            while (this.scene.mages.length < 8)
-                this.scene.entityDeployer.deployMage(this.gameData.mageStats, true)
-        } else if (this.scene.sys.config.key == 'Level3Scene') {
-            while (this.scene.archersList.length < 30)
-                this.scene.entityDeployer.deployArcher(this.gameData.archerStats)
+        while (this.scene.soldierList.length < counts.melee)
+            this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats, drowned)
 
-            while (this.scene.soldierList.length < 60)
-                this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats)
-
-            while (this.scene.mages.length < 12)
-                this.scene.entityDeployer.deployMage(this.gameData.mageStats)
-
-        } else {
-            while (this.scene.archersList.length < 5)
-                this.scene.entityDeployer.deployArcher(this.gameData.archerStats)
-
-            while (this.scene.soldierList.length < 10)
-                this.scene.entityDeployer.deploySoldier(this.gameData.meleeSoldierStats)
-
-            while (this.scene.mages.length < 5)
-                this.scene.entityDeployer.deployMage(this.gameData.mageStats)
-        }
+        while (this.scene.mages.length < counts.mages)
+            this.scene.entityDeployer.deployMage(this.gameData.mageStats, drowned)
 
         this.acherDeployTimer.stop();
 

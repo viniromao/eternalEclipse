@@ -28,7 +28,8 @@ export default class UpgradeSystem {
     }
 
     IncreaseLightRadius() {
-        this.currentScene.fogOfWar.sightRadius = Math.min(this.currentScene.fogOfWar.sightRadius + 150, 250)
+        this.currentScene.fogOfWar.sightRadius += 100;
+        this.currentScene.fogOfWar.looseSpeed = Math.max(this.currentScene.fogOfWar.looseSpeed - 0.005, 0.01);
     }
 
     DecreaseSoldiersRadius() {
@@ -36,7 +37,7 @@ export default class UpgradeSystem {
     }
 
     BuySoldiers() {
-        const numberOfSoldiersOptions = [10, 15, 20];
+        const numberOfSoldiersOptions = [20, 30, 40];
         const randomIndex = Math.floor(Math.random() * numberOfSoldiersOptions.length);
         const numberOfSoldiers = numberOfSoldiersOptions[randomIndex];
 
@@ -50,7 +51,7 @@ export default class UpgradeSystem {
     }
 
     BuyMages() {
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 15; i++) {
             if (this.currentScene.sys.config.key == 'Level2Scene') {
                 this.currentScene.entityDeployer.deployMage(this.currentScene.gameData.mageStats, true);
             } else {
@@ -60,7 +61,7 @@ export default class UpgradeSystem {
     }
 
     BuyArchers() {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 20; i++) {
             if (this.currentScene.sys.config.key == 'Level2Scene') {
                 this.currentScene.entityDeployer.deployArcher(this.currentScene.gameData.archerStats, true);
             } else {

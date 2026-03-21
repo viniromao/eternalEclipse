@@ -46,6 +46,8 @@ export default class Level2Scene extends Phaser.Scene {
         this.entityDeployer.deployFireplace()
 
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'border');
+
+        this.levelProgressionSystem.createSoldier();
     }
 
     togglePause() {

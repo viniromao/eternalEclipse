@@ -67,6 +67,8 @@ class MainScene extends Phaser.Scene {
         const sprite = this.add.sprite(100, 100, 'hit');
         const spriteAnimation = new SpriteAnimationComponent('hit', { start: 0, end: 3 });
         this.animationSystem.addOneTimeAnimation(sprite, spriteAnimation, 30)
+
+        this.levelProgressionSystem.createSoldier();
     }
 
     togglePause() {
